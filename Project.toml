@@ -1,0 +1,7 @@
+name = "BLIS"
+uuid = "32f2db32-628a-4fc2-9392-deeafdcf461f"
+authors = ["RuQing Xu <r-xu@g.ecc.u-tokyo.ac.jp>"]
+version = "0.1.0"
+
+[deps]
+blis_jll = "6136c539-28a5-5bf0-87cc-b183200dce32"
