@@ -1,0 +1,53 @@
+# Wrapper for level-1 BLIS fused-vector routines.
+#
+
+@blis_ccall_group("axpy2v",Cvoid, (BliConj,
+                                   BliConj,
+                                   BliDim,
+                                   Ptr{xType},
+                                   Ptr{xType},
+                                   Ptr{xType}, BliInc,
+                                   Ptr{xType}, BliInc,
+                                   Ptr{xType}, BliInc))
+@blis_ccall_group("dotaxpyv", Cvoid, 
+                  (BliConj,
+                   BliConj,
+                   BliConj,
+                   BliDim,
+                   Ptr{xType},
+                   Ptr{xType}, BliInc,
+                   Ptr{xType}, BliInc,
+                   Ptr{xType},
+                   Ptr{xType}, BliInc))
+@blis_ccall_group("axpyf", Cvoid, (BliConj,
+                                   BliConj,
+                                   BliDim,
+                                   BliDim,
+                                   Ptr{xType},
+                                   Ptr{xType}, BliInc, BliInc,
+                                   Ptr{xType}, BliInc,
+                                   Ptr{xType}, BliInc))
+@blis_ccall_group("dotxf", Cvoid, (BliConj,
+                                   BliConj,
+                                   BliDim,
+                                   BliDim,
+                                   Ptr{xType},
+                                   Ptr{xType}, BliInc, BliInc,
+                                   Ptr{xType}, BliInc,
+                                   Ptr{xType},
+                                   Ptr{xType}, BliInc))
+@blis_ccall_group("dotxaxpyf", Cvoid, 
+                  (BliConj,
+                   BliConj,
+                   BliConj,
+                   BliConj,
+                   BliDim,
+                   BliDim,
+                   Ptr{xType},
+                   Ptr{xType}, BliInc, BliInc,
+                   Ptr{xType}, BliInc,
+                   Ptr{xType}, BliInc,
+                   Ptr{xType},
+                   Ptr{xType}, BliInc,
+                   Ptr{xType}, BliInc))
+

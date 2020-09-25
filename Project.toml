@@ -4,4 +4,5 @@ authors = ["RuQing Xu <r-xu@g.ecc.u-tokyo.ac.jp>"]
 version = "0.1.0"
 
 [deps]
+Libdl = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 blis_jll = "6136c539-28a5-5bf0-87cc-b183200dce32"
