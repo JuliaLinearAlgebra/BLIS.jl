@@ -10,8 +10,12 @@ This repository to provides:
   
 **Short-term Roadmaps**
 
+- Define all `LinearAlgebra.BLAS`-compatible frontends.
 - Define interface methods like `Base.*` and `Base.mul!` for basic
   Julia types like `Array` and `StridedArray`.
+- Provide option to set BLIS as BLAS provider.
+- Incorporate [HPAC/Linnea](https://github.com/HPAC/linnea) in this
+  or another repository.
 
 **Long-term Roadmaps**
 
