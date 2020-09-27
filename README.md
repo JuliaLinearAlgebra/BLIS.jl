@@ -16,6 +16,8 @@ This repository to provides:
 - Provide option to set BLIS as BLAS provider.
 - Incorporate [HPAC/Linnea](https://github.com/HPAC/linnea) in this
   or another repository.
+- Introduce BLIS' testsuite and fallback to `LinearAlgebra.BLAS` for
+  routines that failed the tests.
 
 **Long-term Roadmaps**
 

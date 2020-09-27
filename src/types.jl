@@ -1,6 +1,14 @@
 # BLIS datatypes for uses within Julia and for calling backends.
 #
 
+# BLAS-like type characters.
+cblas_typechar = Dict( Float32    => 's',
+                       Float64    => 'd',
+                       ComplexF32 => 'c',
+                       ComplexF64 => 'z' )
+
+BliCompatibleType = Union{keys(cblas_typechar)...}
+
 # Int type should be consistent with system word size.
 if Sys.WORD_SIZE == 64
     BliInt  = Int64
@@ -67,4 +75,33 @@ export BLIS_LEFT, BLIS_RIGHT
 export BLIS_NONUNIT_DIAG, BLIS_UNIT_DIAG
 export BLIS_NO_INVERT_DIAG, BLIS_INVERT_DIAG
 export BLIS_GENERAL, BLIS_HERMITIAN, BLIS_SYMMETRIC, BLIS_TRIANGULAR
+
+#------------------------------------------
+# Lookup table for traditional BLAS chars.
+char_to_trans = Dict( 'N' => BLIS_NO_TRANSPOSE,
+                      'n' => BLIS_NO_TRANSPOSE,
+                      'T' => BLIS_TRANSPOSE,
+                      't' => BLIS_TRANSPOSE,
+                      'C' => BLIS_CONJ_NO_TRANSPOSE,
+                      'c' => BLIS_CONJ_NO_TRANSPOSE )
+
+char_to_conj = Dict( 'N' => BLIS_NO_CONJUGATE,
+                     'n' => BLIS_NO_CONJUGATE,
+                     'C' => BLIS_CONJUGATE,
+                     'c' => BLIS_CONJUGATE )
+
+char_to_side = Dict( 'L' => BLIS_LEFT,
+                     'l' => BLIS_LEFT,
+                     'R' => BLIS_RIGHT,
+                     'r' => BLIS_RIGHT )
+
+char_to_uplo = Dict( 'U' => BLIS_UPPER,
+                     'u' => BLIS_UPPER,
+                     'L' => BLIS_LOWER,
+                     'l' => BLIS_LOWER )
+
+char_to_diag = Dict( 'N' => BLIS_NONUNIT_DIAG,
+                     'n' => BLIS_NONUNIT_DIAG,
+                     'U' => BLIS_UNIT_DIAG,
+                     'u' => BLIS_UNIT_DIAG )
 
