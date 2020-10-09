@@ -8,8 +8,11 @@ This repository to provides:
   this package also aims to maximize usage of Julia's
   metaprogramming features.
   
-**Short-term Roadmaps**
 
+**Roadmaps**
+
+- Move `bli_?xxx` routines to a submodule named, e.g. `BLIS.backends`.
+- Provide support also for object-like interface.
 - Define all `LinearAlgebra.BLAS`-compatible frontends.
 - Define interface methods like `Base.*` and `Base.mul!` for basic
   Julia types like `Array` and `StridedArray`.
@@ -18,8 +21,3 @@ This repository to provides:
   or another repository.
 - Introduce BLIS' testsuite and fallback to `LinearAlgebra.BLAS` for
   routines that failed the tests.
-
-**Long-term Roadmaps**
-
-- Improve template instantiation style for defining BLIS typed interface.
-- Provide support also for object-like interface.
