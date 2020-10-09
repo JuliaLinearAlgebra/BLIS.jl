@@ -24,14 +24,13 @@ BliInc  = BliInt
 BliDoff = BliInt
 BliSiz  = BliUInt
 
-# These types are defined.
-# Not used in this packages.
+# Integer params for object API.
 BliObjBits = UInt32
 BliAtomic  = ComplexF64
 
 # Enumerates, defined as structures.
 #--------------------------------------------------
-# Enumerate types generated from list_blis_enums.c
+# Enumerate types generated from list_blis_enums.c 
 struct BliTrans enum::BliInt end
 const BLIS_NO_TRANSPOSE      = BliTrans(0)
 const BLIS_TRANSPOSE         = BliTrans(8)
@@ -66,6 +65,16 @@ const BLIS_HERMITIAN         = BliStruc(134217728)
 const BLIS_SYMMETRIC         = BliStruc(268435456)
 const BLIS_TRIANGULAR        = BliStruc(402653184)
 
+struct BliNum enum::BliInt end
+const BLIS_FLOAT             = BliNum(0)
+const BLIS_DOUBLE            = BliNum(2)
+const BLIS_SCOMPLEX          = BliNum(1)
+const BLIS_DCOMPLEX          = BliNum(3)
+const BLIS_INT               = BliNum(4)
+const BLIS_CONSTANT          = BliNum(5)
+const BLIS_DT_LO             = BliNum(0)
+const BLIS_DT_HI             = BliNum(3)
+
 #-------------------------
 # Export enumerate types.
 export BLIS_NO_TRANSPOSE, BLIS_TRANSPOSE, BLIS_CONJ_NO_TRANSPOSE, BLIS_CONJ_TRANSPOSE
@@ -75,6 +84,7 @@ export BLIS_LEFT, BLIS_RIGHT
 export BLIS_NONUNIT_DIAG, BLIS_UNIT_DIAG
 export BLIS_NO_INVERT_DIAG, BLIS_INVERT_DIAG
 export BLIS_GENERAL, BLIS_HERMITIAN, BLIS_SYMMETRIC, BLIS_TRIANGULAR
+export BLIS_FLOAT, BLIS_DOUBLE, BLIS_SCOMPLEX, BLIS_DCOMPLEX, BLIS_IN, BLIS_CONSTANT, BLIS_DT_LO, BLIS_DT_HI
 
 #------------------------------------------
 # Lookup table for traditional BLAS chars.
@@ -104,4 +114,12 @@ char_to_diag = Dict( 'N' => BLIS_NONUNIT_DIAG,
                      'n' => BLIS_NONUNIT_DIAG,
                      'U' => BLIS_UNIT_DIAG,
                      'u' => BLIS_UNIT_DIAG )
+
+#-----------------------------------------------------------
+# Lookup table from Julia datatype to BLIS type indicators.
+ctype_to_bli_num = Dict( Float32    => BLIS_FLOAT,
+                         Float64    => BLIS_DOUBLE,
+                         ComplexF32 => BLIS_SCOMPLEX,
+                         ComplexF64 => BLIS_DCOMPLEX,
+                         BliInt     => BLIS_INT )
 

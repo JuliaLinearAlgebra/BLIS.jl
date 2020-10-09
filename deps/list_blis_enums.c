@@ -69,6 +69,18 @@ int main(void)
     enum_as_jl_construct_member(BLIS_TRIANGULAR       , "BLIS_TRIANGULAR       ", "BliStruc");
     putchar('\n');
 
+    // num_t
+    enum_as_jl_construct_define("BliNum");
+	enum_as_jl_construct_member(BLIS_FLOAT            , "BLIS_FLOAT            ", "BliNum");
+	enum_as_jl_construct_member(BLIS_DOUBLE           , "BLIS_DOUBLE           ", "BliNum");
+	enum_as_jl_construct_member(BLIS_SCOMPLEX         , "BLIS_SCOMPLEX         ", "BliNum");
+	enum_as_jl_construct_member(BLIS_DCOMPLEX         , "BLIS_DCOMPLEX         ", "BliNum");
+	enum_as_jl_construct_member(BLIS_INT              , "BLIS_INT              ", "BliNum");
+	enum_as_jl_construct_member(BLIS_CONSTANT         , "BLIS_CONSTANT         ", "BliNum");
+	enum_as_jl_construct_member(BLIS_DT_LO            , "BLIS_DT_LO            ", "BliNum");
+	enum_as_jl_construct_member(BLIS_DT_HI            , "BLIS_DT_HI            ", "BliNum");
+    putchar('\n');
+
     return 0;
 }
 
