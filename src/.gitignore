@@ -1,0 +1,6 @@
+# Vim
+*.swp
+
+# Emacs
+*~
+
