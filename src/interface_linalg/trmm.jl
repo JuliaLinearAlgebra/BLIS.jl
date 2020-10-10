@@ -3,7 +3,9 @@
 
 macro blis_linalg_trmm(typename, targetfunc, bliname)
 
-    blifunc = Symbol("bli_", cblas_typechar[ eval(typename) ], bliname)
+    # Get method for the typed API backend.
+    blifuncname = Symbol("bli_", cblas_typechar[ eval(typename) ], bliname)
+    blifunc = getproperty(TypedBackend, blifuncname)
 
     return quote
         """
@@ -32,14 +34,14 @@ macro blis_linalg_trmm(typename, targetfunc, bliname)
             (bli_sidea != BLIS_RIGHT ||
              k == n ) || throw(DimensionMismatch("TRMM contracted size mismatch."))
 
-            $(esc(blifunc))(bli_sidea,
-                            bli_uploa,
-                            bli_tA,
-                            bli_dA,
-                            m, n,
-                            [alpha],
-                            A, strides(A)...,
-                            B, strides(B)...)
+            $blifunc(bli_sidea,
+                     bli_uploa,
+                     bli_tA,
+                     bli_dA,
+                     m, n,
+                     [alpha],
+                     A, strides(A)...,
+                     B, strides(B)...)
             B
 
         end

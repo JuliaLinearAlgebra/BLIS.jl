@@ -3,7 +3,9 @@
 
 macro blis_linalg_hemm(typename, targetfunc, bliname)
 
-    blifunc = Symbol("bli_", cblas_typechar[ eval(typename) ], bliname)
+    # Get method for the typed API backend.
+    blifuncname = Symbol("bli_", cblas_typechar[ eval(typename) ], bliname)
+    blifunc = getproperty(TypedBackend, blifuncname)
 
     return quote
         """
@@ -33,16 +35,16 @@ macro blis_linalg_hemm(typename, targetfunc, bliname)
             (bli_sidea != BLIS_RIGHT || 
              k == n ) || throw(DimensionMismatch("HE(SY)MM contracted size mismatch."))
 
-            $(esc(blifunc))(bli_sidea,
-                            bli_uploa,
-                            BLIS_NO_CONJUGATE,
-                            BLIS_NO_TRANSPOSE,
-                            m, n,
-                            [alpha],
-                            A, strides(A)...,
-                            B, strides(B)...,
-                            [beta],
-                            C, strides(C)...)
+            $blifunc(bli_sidea,
+                     bli_uploa,
+                     BLIS_NO_CONJUGATE,
+                     BLIS_NO_TRANSPOSE,
+                     m, n,
+                     [alpha],
+                     A, strides(A)...,
+                     B, strides(B)...,
+                     [beta],
+                     C, strides(C)...)
             C
 
         end

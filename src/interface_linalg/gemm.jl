@@ -3,7 +3,9 @@
 
 macro blis_linalg_gemm(typename, targetfunc, bliname)
 
-    blifunc = Symbol("bli_", cblas_typechar[ eval(typename) ], bliname)
+    # Get method for the typed API backend.
+    blifuncname = Symbol("bli_", cblas_typechar[ eval(typename) ], bliname)
+    blifunc = getproperty(TypedBackend, blifuncname)
 
     return quote
         """
@@ -37,14 +39,14 @@ macro blis_linalg_gemm(typename, targetfunc, bliname)
             (m == m_ && 
              n == n_) || throw(DimensionMismatch("GEMM target buffer size mismatch."))
 
-            $(esc(blifunc))(bli_tA,
-                            bli_tB,
-                            m, n, k,
-                            [alpha],
-                            A, strides(A)...,
-                            B, strides(B)...,
-                            [beta],
-                            C, strides(C)...)
+            $blifunc(bli_tA,
+                     bli_tB,
+                     m, n, k,
+                     [alpha],
+                     A, strides(A)...,
+                     B, strides(B)...,
+                     [beta],
+                     C, strides(C)...)
             C
 
         end
