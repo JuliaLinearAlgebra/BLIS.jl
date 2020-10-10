@@ -22,7 +22,7 @@ module Types
 include("types.jl")
 end
 
-# Backend macros.
+# Typed-API backend.
 module TypedBackend
 import ..blis
 import ..libblis
@@ -40,6 +40,25 @@ include("backend_typed/level1f.jl")
 include("backend_typed/level2.jl")
 include("backend_typed/level3.jl")
 include("backend_typed/utility.jl")
+end
+
+# Object-API backend.
+module ObjectBackend
+import ..blis
+import ..libblis
+using ..Libdl
+using ..Types: BliDim, BliInc, BliDoff, BliSiz
+using ..Types: BliObjBits, BliAtomic, BliNum
+using ..Types: BliSide
+include("backend_object/object.jl")
+include("backend_object/common.jl")
+include("backend_object/level1v.jl")
+include("backend_object/level1d.jl")
+include("backend_object/level1m.jl")
+include("backend_object/level1f.jl")
+include("backend_object/level2.jl")
+include("backend_object/level3.jl")
+include("backend_object/utility.jl")
 end
 
 # LinearAlgebra BLAS interface.

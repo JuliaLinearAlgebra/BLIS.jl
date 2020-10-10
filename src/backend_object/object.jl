@@ -1,6 +1,8 @@
 # Defines BLIS Objects and related methods.
 #
 
+export BliObj, BliObjBase
+
 " BliObjBase resembles obj_t of BLIS' object-based interface. "
 struct BliObjBase
     # Basic fields.

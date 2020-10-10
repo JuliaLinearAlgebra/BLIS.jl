@@ -13,8 +13,15 @@ macro blis_ccall_object(funcname, ret, named_param_pairs...)
     params = named_param_pairs[2:2:end]
 
     # For types, replace xObj with appropriate C and Jl call types.
-    ccparams = ( iType -> eval(:( ( xObj -> $iType )(Ptr{BliObjBase}) )) ).(params)
-    jlparams = ( iType -> eval(:( ( xObj -> $iType )(    BliObj     ) )) ).(params)
+    # ccparams = ( iType -> eval(:( ( xObj -> $iType )(Ptr{BliObjBase}) )) ).(params)
+    # jlparams = ( iType -> eval(:( ( xObj -> $iType )(    BliObj     ) )) ).(params)
+    # None-Base types cannot be "verified" with the above `eval`
+    #  (will yield "BLIS.ObjeckBackend.BliObj" as variable name hence not found).
+    # Do this string (symbol) replacing.
+    ccparams = (iSym -> if iSym == :xObj
+                :( Ptr{BliObjBase} ) else iSym end).(params)
+    jlparams = (iSym -> if iSym == :xObj
+                :BliObj else iSym end).(params)
 
     # Convert C typenames into a static symbol of tuple.
     ccparam_syms = Expr(:tuple, ccparams...)
