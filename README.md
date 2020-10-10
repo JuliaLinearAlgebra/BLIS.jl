@@ -36,6 +36,23 @@ wC = view(C, 1:2:4, 1:2:4);
 BLASInterface.gemm!('N', 'N', 1.0+0im, wA, wB, 1.0+0im, wC)
 ```
 
+### BLIS Typed Backend
+
+Typed Backend of BLIS is directly accesible via the `BLIS.TypedBackend` submodule. The following example demonstrates usage of BLIS's [`bli_dmkherm`](https://github.com/flame/blis/blob/master/docs/BLISTypedAPI.md#mkherm) method:
+
+```julia
+using BLIS
+# Import BLIS' enumerate types
+# like BLIS_UPPER and BLIS_TRANSPOSE.
+using BLIS.Types
+
+A = rand(4, 4)
+# NOTE: of course for rsa and csa parameters
+# one can directly pass strides(A) and expand.
+BLIS.TypedBackend.bli_dmkherm!(BLIS_UPPER, 4, A, strides(A)...)
+A # Check that A is projected to be Hermitian.
+```
+
 ## Roadmaps
 
 - Provide support also for BLIS' object interface.
