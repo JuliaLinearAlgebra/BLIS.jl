@@ -2,12 +2,7 @@ module BLIS
 
 using Libdl
 using blis_jll: blis
-
 using LinearAlgebra
-import LinearAlgebra.BLAS: gemm!, gemm
-import LinearAlgebra.BLAS: hemm!, hemm
-import LinearAlgebra.BLAS: symm!, symm
-import LinearAlgebra.BLAS: gemv!, gemv
 
 global libblis = C_NULL
 
@@ -50,6 +45,12 @@ end
 # LinearAlgebra BLAS interface.
 module BLASInterface
 import ..TypedBackend
+import ..LinearAlgebra.BLAS: gemm!, gemm
+import ..LinearAlgebra.BLAS: hemm!, hemm
+import ..LinearAlgebra.BLAS: symm!, symm
+import ..LinearAlgebra.BLAS: trmm!, trmm
+import ..LinearAlgebra.BLAS: her2k!, her2k
+import ..LinearAlgebra.BLAS: syr2k!, syr2k
 using ..Types
 using ..Types: cblas_typechar
 using ..Types: char_to_trans, char_to_conj, char_to_side, char_to_uplo, char_to_diag
