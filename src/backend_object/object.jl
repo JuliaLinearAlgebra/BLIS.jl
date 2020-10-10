@@ -60,7 +60,7 @@ BliObj(A::StridedMatrix) = begin
     dtA = ctype_to_bli_num[eltype(A)]
 
     # Initialize object with reference.
-    objA = new(BliObjBase(), A)
+    objA = BliObj(BliObjBase(), A)
     # NOTE: though A could not be immutable, pass always objA.data for safety.
     bli_obj_create_with_attached_buffer!(dtA, mA, nA, objA.data, rsA, csA, objA, obj)
 
