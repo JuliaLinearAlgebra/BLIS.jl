@@ -1,5 +1,6 @@
 module BLIS
 
+using Base
 using Libdl
 using blis_jll: blis
 using LinearAlgebra
@@ -47,6 +48,9 @@ module ObjectBackend
 import ..blis
 import ..libblis
 using ..Libdl
+using ..Base: RefValue, unsafe_convert
+using ..Types: ctype_to_bli_num
+using ..Types: BliCompatibleType
 using ..Types: BliDim, BliInc, BliDoff, BliSiz
 using ..Types: BliObjBits, BliAtomic, BliNum
 using ..Types: BliSide

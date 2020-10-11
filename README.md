@@ -38,7 +38,7 @@ BLASInterface.gemm!('N', 'N', 1.0+0im, wA, wB, 1.0+0im, wC)
 
 ### BLIS Typed Backend
 
-Typed Backend of BLIS is directly accesible via the `BLIS.TypedBackend` submodule. The following example demonstrates usage of BLIS's [`bli_dmkherm`](https://github.com/flame/blis/blob/master/docs/BLISTypedAPI.md#mkherm) method:
+[Typed-API](https://github.com/flame/blis/blob/master/docs/BLISTypedAPI.md) backend of BLIS is directly accesible via the `BLIS.TypedBackend` submodule. The following example demonstrates usage of BLIS's [`bli_dmkherm`](https://github.com/flame/blis/blob/master/docs/BLISTypedAPI.md#mkherm) method:
 
 ```julia
 using BLIS
@@ -53,9 +53,45 @@ BLIS.TypedBackend.bli_dmkherm!(BLIS_UPPER, 4, A, strides(A)...)
 A # Check that A is projected to be Hermitian.
 ```
 
+### BLIS Object Backend
+
+[Object-API](https://github.com/flame/blis/blob/master/docs/BLISObjectAPI.md) backend is exposed as `BLIS.ObjectBackend` submodule. Mixed-precision BLAS functions are only available via Object-API methods:
+
+```julia
+using BLIS
+using BLIS.ObjectBackend
+
+# α and β should always be created from numbers.
+oα = BliObj(1.0);
+oβ = BliObj(1.0);
+# Matrix objects can be created from Arrays or views.
+oA = BliObj(rand(Float32, 4, 4));
+oB = BliObj(rand(Float32, 4, 4));
+C = zeros(Float64, 8, 8);
+wC = view(C, 1:2:8, 1:2:8);
+oC = BliObj(wC);
+# Mixed-precision GEMM into scattered target storage:
+#      A * B -> C[1:2:7, 1:2:7],
+#  where A and B have single precision and multiply into
+#  a double precision target matrix.
+BLIS.ObjectBackend.bli_gemm!(oα, oA, oB, oβ, oC)
+# View result at target matrix C.
+# Here's an example output.
+C
+[
+ 1.59116  0.0  1.34804   0.0  1.68991  0.0  1.58798  0.0;
+ 0.0      0.0  0.0       0.0  0.0      0.0  0.0      0.0;
+ 1.27603  0.0  1.31893   0.0  1.40484  0.0  1.06297  0.0;
+ 0.0      0.0  0.0       0.0  0.0      0.0  0.0      0.0;
+ 2.12725  0.0  1.72495   0.0  2.37218  0.0  1.56937  0.0;
+ 0.0      0.0  0.0       0.0  0.0      0.0  0.0      0.0;
+ 1.0284   0.0  0.858046  0.0  1.05108  0.0  1.25478  0.0;
+ 0.0      0.0  0.0       0.0  0.0      0.0  0.0      0.0;
+]
+```
+
 ## Roadmaps
 
-- Provide support also for BLIS' object interface.
 - Implement `LinearAlgebra.BLAS` frontend against the object interface to enable mixed precision support.
 - Define all `LinearAlgebra.BLAS`-compatible frontends.
 - Define interface methods like `Base.*` and `Base.mul!` for basic

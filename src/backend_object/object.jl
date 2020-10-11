@@ -4,7 +4,7 @@
 export BliObj, BliObjBase
 
 " BliObjBase resembles obj_t of BLIS' object-based interface. "
-struct BliObjBase
+mutable struct BliObjBase
     # Basic fields.
     root::Ptr{BliObjBase} 
     off::NTuple{2, BliDim}
@@ -49,24 +49,42 @@ This is to preserve the base array from being recycled by GC module.
 """
 struct BliObj
     obj::BliObjBase
-    # Referee of obj.buffer, which itself can also be a reference.
-    data::Any
+    # Referee of obj.buffer, which itself is also a reference.
+    # Purpose is to keep data alive.
+    data::RefValue
 end
 
 
 " Object from strided matrix (view). "
-BliObj(A::StridedMatrix) = begin
+BliObj(A::StridedMatrix{T}) where {T<:BliCompatibleType} = begin
     # Query data format.
     mA, nA = size(A)
     rsA, csA = strides(A)
-    dtA = ctype_to_bli_num[eltype(A)]
+    dtA = ctype_to_bli_num[T]
 
     # Initialize object with reference.
-    objA = BliObj(BliObjBase(), A)
-    # NOTE: though A could not be immutable, pass always objA.data for safety.
-    bli_obj_create_with_attached_buffer!(dtA, mA, nA, objA.data, rsA, csA, objA, obj)
+    objA = BliObj(BliObjBase(), Ref(A))
+    # Pass address of A to object initializer.
+    bli_obj_create_with_attached_buffer!(dtA, mA, nA,
+                                         unsafe_convert(Ptr{Nothing}, A), rsA, csA,
+                                         objA.obj)
 
     objA
+end
+
+" Object from scalar number. "
+BliObj(γ::T) where {T<:BliCompatibleType} = begin
+    dtγ = ctype_to_bli_num[T]
+
+    objγ = BliObj(BliObjBase(), Ref(nothing))
+    # bli_obj_create_1x1_with_attached_buffer!(dtγ,
+    #                                          unsafe_convert(Ptr{Nothing}, objγ.data),
+    #                                          objγ.obj)
+    # Instead of something like above, use internal scalar storage.
+    bli_obj_scalar_init_detached!(dtγ, objγ.obj)
+    bli_setsc!(real(γ), imag(γ), objγ.obj)
+
+    objγ
 end
 
 
@@ -89,7 +107,7 @@ bli_obj_create_without_buffer!(dt::BliNum,
                                                          BliDim,
                                                          BliDim,
                                                          Ptr{BliObjBase}),
-                                                        dt, m, n, obj)
+                                                        dt, m, n, Ref(obj))
 
 bli_obj_attach_buffer!(p::Ptr{Nothing},
                        rs::BliInc,
@@ -102,7 +120,7 @@ bli_obj_attach_buffer!(p::Ptr{Nothing},
                                                  BliInc,
                                                  BliInc,
                                                  Ptr{BliObjBase}),
-                                                p, rs, cs, is, obj)
+                                                p, rs, cs, is, Ref(obj))
 
 bli_obj_create_with_attached_buffer!(dt::BliNum,
                                      m::BliDim,
@@ -119,7 +137,7 @@ bli_obj_create_with_attached_buffer!(dt::BliNum,
                                                                BliInc,
                                                                BliInc,
                                                                Ptr{BliObjBase}),
-                                                              dt, m, n, p, rs, cs, obj)
+                                                              dt, m, n, p, rs, cs, Ref(obj))
 
 bli_obj_create_1x1_with_attached_buffer!(dt::BliNum,
                                          p::Ptr{Nothing},
@@ -128,12 +146,21 @@ bli_obj_create_1x1_with_attached_buffer!(dt::BliNum,
                                                                   (BliNum,
                                                                    Ptr{Nothing},
                                                                    Ptr{BliObjBase}),
-                                                                  dt, p, obj)
+                                                                  dt, p, Ref(obj))
 
 bli_obj_scalar_init_detached!(dt::BliNum,
                               obj::BliObjBase) = ccall(dlsym(libblis, :bli_obj_scalar_init_detached),
                                                        Nothing,
                                                        (BliNum,
                                                         Ptr{BliObjBase}),
-                                                       dt, obj)
+                                                       dt, Ref(obj))
+
+bli_setsc!(zeta_r::Float64,
+           zeta_i::Float64,
+           obj::BliObjBase) = ccall(dlsym(libblis, :bli_setsc),
+                                    Nothing,
+                                    (Float64,
+                                     Float64,
+                                     Ptr{BliObjBase}),
+                                    zeta_r, zeta_i, Ref(obj))
 

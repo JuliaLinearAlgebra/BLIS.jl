@@ -26,16 +26,14 @@ macro blis_ccall_object(funcname, ret, named_param_pairs...)
     # Convert C typenames into a static symbol of tuple.
     ccparam_syms = Expr(:tuple, ccparams...)
 
-    # Convert Jl typenames into a tuple of symbols,
-    #  then typed-asserted parameter definition.
-    jlparam_syms = Symbol.(jlparams)
-    jldefs = ( (iArg, iType) -> :( $iArg::$iType ) ).(names, jlparam_syms)
+    # Convert Jl typenames into typed-asserted parameter definition.
+    jldefs = ( (iArg, iType) -> :( $iArg::$iType ) ).(names, jlparams)
 
     # Actual arguments with BliObj type should be
     #  converted to BliObjBase when passed to ccall.
     jlargs = ( (iArg, iType) -> begin 
-                   if iType == BliObj
-                       :($iArg.obj) 
+                   if iType == :BliObj
+                       :( Ref($iArg.obj) )
                    else
                        iArg
                    end 
