@@ -71,20 +71,25 @@ end
 
 # LinearAlgebra BLAS interface.
 module BLASInterface
-import ..TypedBackend
-import ..LinearAlgebra.BLAS: gemm!, gemm
-import ..LinearAlgebra.BLAS: hemm!, hemm
-import ..LinearAlgebra.BLAS: symm!, symm
-import ..LinearAlgebra.BLAS: trmm!, trmm
-import ..LinearAlgebra.BLAS: her2k!, her2k
-import ..LinearAlgebra.BLAS: syr2k!, syr2k
+import ..LinearAlgebra.BLAS: gemm!
+import ..LinearAlgebra.BLAS: hemm!
+import ..LinearAlgebra.BLAS: symm!
+import ..LinearAlgebra.BLAS: trmm!
+import ..LinearAlgebra.BLAS: trsm!
+import ..LinearAlgebra.BLAS: herk!
+import ..LinearAlgebra.BLAS: syrk!
+import ..LinearAlgebra.BLAS: her2k!
+import ..LinearAlgebra.BLAS: syr2k!
+export gemm!, hemm!, symm!, trmm!, trsm!, herk!, syrk!, her2k!, syr2k!
+using ..TypedBackend
+using ..ObjectBackend
 using ..Types
 using ..Types: cblas_typechar
 using ..Types: char_to_trans, char_to_conj, char_to_side, char_to_uplo, char_to_diag
-include("interface_linalg/gemm.jl")
-include("interface_linalg/hemm.jl")
-include("interface_linalg/trmm.jl")
-include("interface_linalg/her2k.jl")
+using ..Types: BliTrans, BliConj, BliUpLo, BliSide, BliDiag, BliInvDiag, BliStruc
+using ..Types: BliCompatibleType
+using ..Types: BLIS_TRANS_BIT
+include("interface_linalg/level3.jl")
 end
 
 end
