@@ -75,6 +75,27 @@ const BLIS_CONSTANT          = BliNum(5)
 const BLIS_DT_LO             = BliNum(0)
 const BLIS_DT_HI             = BliNum(3)
 
+const BLIS_CONJTRANS_BITS    = BliObjBits(24)
+const BLIS_DATATYPE_BITS     = BliObjBits(7)
+const BLIS_DOMAIN_BIT        = BliObjBits(1)
+const BLIS_PRECISION_BIT     = BliObjBits(2)
+const BLIS_CONJTRANS_BITS    = BliObjBits(24)
+const BLIS_TRANS_BIT         = BliObjBits(8)
+const BLIS_CONJ_BIT          = BliObjBits(16)
+const BLIS_UPLO_BITS         = BliObjBits(224)
+const BLIS_UPPER_BIT         = BliObjBits(32)
+const BLIS_DIAG_BIT          = BliObjBits(64)
+const BLIS_LOWER_BIT         = BliObjBits(128)
+const BLIS_UNIT_DIAG_BIT     = BliObjBits(256)
+const BLIS_INVERT_DIAG_BIT   = BliObjBits(512)
+const BLIS_TARGET_DT_BITS    = BliObjBits(7168)
+const BLIS_TARGET_DOMAIN_BIT = BliObjBits(1024)
+const BLIS_TARGET_PREC_BIT   = BliObjBits(2048)
+const BLIS_EXEC_DT_BITS      = BliObjBits(57344)
+const BLIS_EXEC_DOMAIN_BIT   = BliObjBits(8192)
+const BLIS_EXEC_PREC_BIT     = BliObjBits(16384)
+const BLIS_STRUC_BITS        = BliObjBits(402653184)
+
 #-------------------------
 # Export enumerate types.
 export BLIS_NO_TRANSPOSE, BLIS_TRANSPOSE, BLIS_CONJ_NO_TRANSPOSE, BLIS_CONJ_TRANSPOSE
@@ -84,7 +105,8 @@ export BLIS_LEFT, BLIS_RIGHT
 export BLIS_NONUNIT_DIAG, BLIS_UNIT_DIAG
 export BLIS_NO_INVERT_DIAG, BLIS_INVERT_DIAG
 export BLIS_GENERAL, BLIS_HERMITIAN, BLIS_SYMMETRIC, BLIS_TRIANGULAR
-export BLIS_FLOAT, BLIS_DOUBLE, BLIS_SCOMPLEX, BLIS_DCOMPLEX, BLIS_IN, BLIS_CONSTANT, BLIS_DT_LO, BLIS_DT_HI
+export BLIS_FLOAT, BLIS_DOUBLE, BLIS_SCOMPLEX, BLIS_DCOMPLEX, BLIS_IN, BLIS_CONSTANT
+export BLIS_DT_LO, BLIS_DT_HI
 
 #------------------------------------------
 # Lookup table for traditional BLAS chars.

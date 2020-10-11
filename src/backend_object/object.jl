@@ -164,3 +164,45 @@ bli_setsc!(zeta_r::Float64,
                                      Ptr{BliObjBase}),
                                     zeta_r, zeta_i, Ref(obj))
 
+#----------------------------------------------------------------
+# These methods replicates BLIS' C marcos for setting obj_t.info.
+# They are exposed in a minimum fashion.
+
+bli_obj_set_info_bits!(dest::BliObjBits,
+                       src::BliObjBits,
+                       obj::BliObjBase) = begin
+    obj.info1 = UInt32( ( obj.info1 & ~dest ) | src )
+
+    nothing
+end
+
+bli_obj_set_conjtrans!(t::BliTrans,
+                       obj::BliObjBase) = bli_obj_set_info_bits!(BLIS_CONJTRANS_BITS,
+                                                                 BliObjBits(t.enum),
+                                                                 obj)
+
+bli_obj_set_onlytrans!(t::BliTrans,
+                       obj::BliObjBase) = bli_obj_set_info_bits!(BLIS_TRANS_BIT,
+                                                                 BliObjBits(t.enum),
+                                                                 obj)
+
+bli_obj_set_conj!(c::BliConj,
+                  obj::BliObjBase) = bli_obj_set_info_bits!(BLIS_CONJ_BIT,
+                                                            BliObjBits(c.enum),
+                                                            obj)
+
+bli_obj_set_uplo!(ul::BliUpLo,
+                  obj::BliObjBase) = bli_obj_set_info_bits!(BLIS_UPLO_BITS,
+                                                            BliObjBits(ul.enum),
+                                                            obj)
+
+bli_obj_set_diag!(d::BliDiag,
+                  obj::BliObjBase) = bli_obj_set_info_bits!(BLIS_DIAG_BIT,
+                                                            BliObjBits(d.enum),
+                                                            obj)
+
+bli_obj_set_invert_diag!(id::BliInvDiag,
+                         obj::BliObjBase) = bli_obj_set_info_bits!(BLIS_INVERT_DIAG_BIT,
+                                                                   BliObjBits(id.enum),
+                                                                   obj)
+

@@ -71,15 +71,38 @@ int main(void)
 
     // num_t
     enum_as_jl_construct_define("BliNum");
-	enum_as_jl_construct_member(BLIS_FLOAT            , "BLIS_FLOAT            ", "BliNum");
-	enum_as_jl_construct_member(BLIS_DOUBLE           , "BLIS_DOUBLE           ", "BliNum");
-	enum_as_jl_construct_member(BLIS_SCOMPLEX         , "BLIS_SCOMPLEX         ", "BliNum");
-	enum_as_jl_construct_member(BLIS_DCOMPLEX         , "BLIS_DCOMPLEX         ", "BliNum");
-	enum_as_jl_construct_member(BLIS_INT              , "BLIS_INT              ", "BliNum");
-	enum_as_jl_construct_member(BLIS_CONSTANT         , "BLIS_CONSTANT         ", "BliNum");
-	enum_as_jl_construct_member(BLIS_DT_LO            , "BLIS_DT_LO            ", "BliNum");
-	enum_as_jl_construct_member(BLIS_DT_HI            , "BLIS_DT_HI            ", "BliNum");
+    enum_as_jl_construct_member(BLIS_FLOAT            , "BLIS_FLOAT            ", "BliNum");
+    enum_as_jl_construct_member(BLIS_DOUBLE           , "BLIS_DOUBLE           ", "BliNum");
+    enum_as_jl_construct_member(BLIS_SCOMPLEX         , "BLIS_SCOMPLEX         ", "BliNum");
+    enum_as_jl_construct_member(BLIS_DCOMPLEX         , "BLIS_DCOMPLEX         ", "BliNum");
+    enum_as_jl_construct_member(BLIS_INT              , "BLIS_INT              ", "BliNum");
+    enum_as_jl_construct_member(BLIS_CONSTANT         , "BLIS_CONSTANT         ", "BliNum");
+    enum_as_jl_construct_member(BLIS_DT_LO            , "BLIS_DT_LO            ", "BliNum");
+    enum_as_jl_construct_member(BLIS_DT_HI            , "BLIS_DT_HI            ", "BliNum");
     putchar('\n');
+
+    // info bits, use enum_as_jl_construct_member to print though it's not enum.
+    enum_as_jl_construct_member(BLIS_CONJTRANS_BITS   , "BLIS_CONJTRANS_BITS   ", "BliObjBits");
+    enum_as_jl_construct_member(BLIS_DATATYPE_BITS    , "BLIS_DATATYPE_BITS    ", "BliObjBits");
+    enum_as_jl_construct_member(BLIS_DOMAIN_BIT       , "BLIS_DOMAIN_BIT       ", "BliObjBits");
+    enum_as_jl_construct_member(BLIS_PRECISION_BIT    , "BLIS_PRECISION_BIT    ", "BliObjBits");
+    enum_as_jl_construct_member(BLIS_CONJTRANS_BITS   , "BLIS_CONJTRANS_BITS   ", "BliObjBits");
+    enum_as_jl_construct_member(BLIS_TRANS_BIT        , "BLIS_TRANS_BIT        ", "BliObjBits");
+    enum_as_jl_construct_member(BLIS_CONJ_BIT         , "BLIS_CONJ_BIT         ", "BliObjBits");
+    enum_as_jl_construct_member(BLIS_UPLO_BITS        , "BLIS_UPLO_BITS        ", "BliObjBits");
+    enum_as_jl_construct_member(BLIS_UPPER_BIT        , "BLIS_UPPER_BIT        ", "BliObjBits");
+    enum_as_jl_construct_member(BLIS_DIAG_BIT         , "BLIS_DIAG_BIT         ", "BliObjBits");
+    enum_as_jl_construct_member(BLIS_LOWER_BIT        , "BLIS_LOWER_BIT        ", "BliObjBits");
+    enum_as_jl_construct_member(BLIS_UNIT_DIAG_BIT    , "BLIS_UNIT_DIAG_BIT    ", "BliObjBits");
+    enum_as_jl_construct_member(BLIS_INVERT_DIAG_BIT  , "BLIS_INVERT_DIAG_BIT  ", "BliObjBits");
+    enum_as_jl_construct_member(BLIS_TARGET_DT_BITS   , "BLIS_TARGET_DT_BITS   ", "BliObjBits");
+    enum_as_jl_construct_member(BLIS_TARGET_DOMAIN_BIT, "BLIS_TARGET_DOMAIN_BIT", "BliObjBits");
+    enum_as_jl_construct_member(BLIS_TARGET_PREC_BIT  , "BLIS_TARGET_PREC_BIT  ", "BliObjBits");
+    enum_as_jl_construct_member(BLIS_EXEC_DT_BITS     , "BLIS_EXEC_DT_BITS     ", "BliObjBits");
+    enum_as_jl_construct_member(BLIS_EXEC_DOMAIN_BIT  , "BLIS_EXEC_DOMAIN_BIT  ", "BliObjBits");
+    enum_as_jl_construct_member(BLIS_EXEC_PREC_BIT    , "BLIS_EXEC_PREC_BIT    ", "BliObjBits");
+    enum_as_jl_construct_member(BLIS_STRUC_BITS       , "BLIS_STRUC_BITS       ", "BliObjBits");
+    // PACK and COMP info omitted.
 
     return 0;
 }
