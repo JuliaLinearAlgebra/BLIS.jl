@@ -1,9 +1,7 @@
 # Level-3 LinearAlgebra.BLAS interface.
 #
 
-"""
-Level3 BLAS size checker.
-"""
+" Level3 BLAS size checker. "
 bli_check_lv3(transa::BliTrans,
               transb::BliTrans,
               transc::BliTrans,
@@ -62,24 +60,25 @@ macro blis_interface_linalg_lv3_gemm(Tc1, T1, T2, Tc2, T3, targetfunc, bliname)
             ObjectBackend.bli_obj_set_onlytrans!(bli_tB, oB.obj)
             $blifunc(oα, oA, oB, oβ, oC)
             C
+
         end
     end
 end
 
 # To avoid obfuscating with LinearAlgebra.gemm!,
 #  instantiate more specifically.
-@blis_interface_linalg_lv3_gemm Float32 Float32 Float32 Float32 Float32 gemm! gemm!
-@blis_interface_linalg_lv3_gemm Float64 Float64 Float64 Float64 Float64 gemm! gemm!
-@blis_interface_linalg_lv3_gemm Float32 Float32 Float32 Float64 Float64 gemm! gemm!
+@blis_interface_linalg_lv3_gemm Float32    Float32    Float32    Float32    Float32    gemm! gemm!
+@blis_interface_linalg_lv3_gemm Float64    Float64    Float64    Float64    Float64    gemm! gemm!
+@blis_interface_linalg_lv3_gemm Float32    Float32    Float32    Float64    Float64    gemm! gemm!
 @blis_interface_linalg_lv3_gemm ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 gemm! gemm!
 @blis_interface_linalg_lv3_gemm ComplexF64 ComplexF64 ComplexF64 ComplexF64 ComplexF64 gemm! gemm!
 @blis_interface_linalg_lv3_gemm ComplexF32 ComplexF32 ComplexF32 ComplexF64 ComplexF64 gemm! gemm!
-@blis_interface_linalg_lv3_gemm Float32 ComplexF32 ComplexF32 Float32 ComplexF32 gemm! gemm!
-@blis_interface_linalg_lv3_gemm Float64 ComplexF64 ComplexF64 Float64 ComplexF64 gemm! gemm!
-@blis_interface_linalg_lv3_gemm Float64 Float64 ComplexF64 ComplexF64 ComplexF64 gemm! gemm!
-@blis_interface_linalg_lv3_gemm Float64 ComplexF64 Float64 ComplexF64 ComplexF64 gemm! gemm!
-@blis_interface_linalg_lv3_gemm ComplexF64 Float64 ComplexF64 ComplexF64 ComplexF64 gemm! gemm!
-@blis_interface_linalg_lv3_gemm ComplexF64 ComplexF64 Float64 ComplexF64 ComplexF64 gemm! gemm!
+@blis_interface_linalg_lv3_gemm Float32    ComplexF32 ComplexF32 Float32    ComplexF32 gemm! gemm!
+@blis_interface_linalg_lv3_gemm Float64    ComplexF64 ComplexF64 Float64    ComplexF64 gemm! gemm!
+@blis_interface_linalg_lv3_gemm Float64    Float64    ComplexF64 ComplexF64 ComplexF64 gemm! gemm!
+@blis_interface_linalg_lv3_gemm Float64    ComplexF64 Float64    ComplexF64 ComplexF64 gemm! gemm!
+@blis_interface_linalg_lv3_gemm ComplexF64 Float64    ComplexF64 ComplexF64 ComplexF64 gemm! gemm!
+@blis_interface_linalg_lv3_gemm ComplexF64 ComplexF64 Float64    ComplexF64 ComplexF64 gemm! gemm!
 
 macro blis_interface_linalg_lv3_hemm(Tc1, T1, T2, Tc2, T3, targetfunc, bliname)
 
@@ -130,31 +129,31 @@ macro blis_interface_linalg_lv3_hemm(Tc1, T1, T2, Tc2, T3, targetfunc, bliname)
     end
 end
 
-@blis_interface_linalg_lv3_hemm Float32 Float32 Float32 Float32 Float32 hemm! hemm!
-@blis_interface_linalg_lv3_hemm Float64 Float64 Float64 Float64 Float64 hemm! hemm!
-@blis_interface_linalg_lv3_hemm Float32 Float32 Float32 Float64 Float64 hemm! hemm!
+@blis_interface_linalg_lv3_hemm Float32    Float32    Float32    Float32    Float32    hemm! hemm!
+@blis_interface_linalg_lv3_hemm Float64    Float64    Float64    Float64    Float64    hemm! hemm!
+@blis_interface_linalg_lv3_hemm Float32    Float32    Float32    Float64    Float64    hemm! hemm!
 @blis_interface_linalg_lv3_hemm ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 hemm! hemm!
 @blis_interface_linalg_lv3_hemm ComplexF64 ComplexF64 ComplexF64 ComplexF64 ComplexF64 hemm! hemm!
 @blis_interface_linalg_lv3_hemm ComplexF32 ComplexF32 ComplexF32 ComplexF64 ComplexF64 hemm! hemm!
-@blis_interface_linalg_lv3_hemm Float32 ComplexF32 ComplexF32 Float32 ComplexF32 hemm! hemm!
-@blis_interface_linalg_lv3_hemm Float64 ComplexF64 ComplexF64 Float64 ComplexF64 hemm! hemm!
-@blis_interface_linalg_lv3_hemm Float64 Float64 ComplexF64 ComplexF64 ComplexF64 hemm! hemm!
-@blis_interface_linalg_lv3_hemm Float64 ComplexF64 Float64 ComplexF64 ComplexF64 hemm! hemm!
-@blis_interface_linalg_lv3_hemm ComplexF64 Float64 ComplexF64 ComplexF64 ComplexF64 hemm! hemm!
-@blis_interface_linalg_lv3_hemm ComplexF64 ComplexF64 Float64 ComplexF64 ComplexF64 hemm! hemm!
+@blis_interface_linalg_lv3_hemm Float32    ComplexF32 ComplexF32 Float32    ComplexF32 hemm! hemm!
+@blis_interface_linalg_lv3_hemm Float64    ComplexF64 ComplexF64 Float64    ComplexF64 hemm! hemm!
+@blis_interface_linalg_lv3_hemm Float64    Float64    ComplexF64 ComplexF64 ComplexF64 hemm! hemm!
+@blis_interface_linalg_lv3_hemm Float64    ComplexF64 Float64    ComplexF64 ComplexF64 hemm! hemm!
+@blis_interface_linalg_lv3_hemm ComplexF64 Float64    ComplexF64 ComplexF64 ComplexF64 hemm! hemm!
+@blis_interface_linalg_lv3_hemm ComplexF64 ComplexF64 Float64    ComplexF64 ComplexF64 hemm! hemm!
 
-@blis_interface_linalg_lv3_hemm Float32 Float32 Float32 Float32 Float32 symm! symm!
-@blis_interface_linalg_lv3_hemm Float64 Float64 Float64 Float64 Float64 symm! symm!
-@blis_interface_linalg_lv3_hemm Float32 Float32 Float32 Float64 Float64 symm! symm!
+@blis_interface_linalg_lv3_hemm Float32    Float32    Float32    Float32    Float32    symm! symm!
+@blis_interface_linalg_lv3_hemm Float64    Float64    Float64    Float64    Float64    symm! symm!
+@blis_interface_linalg_lv3_hemm Float32    Float32    Float32    Float64    Float64    symm! symm!
 @blis_interface_linalg_lv3_hemm ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 symm! symm!
 @blis_interface_linalg_lv3_hemm ComplexF64 ComplexF64 ComplexF64 ComplexF64 ComplexF64 symm! symm!
 @blis_interface_linalg_lv3_hemm ComplexF32 ComplexF32 ComplexF32 ComplexF64 ComplexF64 symm! symm!
-@blis_interface_linalg_lv3_hemm Float32 ComplexF32 ComplexF32 Float32 ComplexF32 symm! symm!
-@blis_interface_linalg_lv3_hemm Float64 ComplexF64 ComplexF64 Float64 ComplexF64 symm! symm!
-@blis_interface_linalg_lv3_hemm Float64 Float64 ComplexF64 ComplexF64 ComplexF64 symm! symm!
-@blis_interface_linalg_lv3_hemm Float64 ComplexF64 Float64 ComplexF64 ComplexF64 symm! symm!
-@blis_interface_linalg_lv3_hemm ComplexF64 Float64 ComplexF64 ComplexF64 ComplexF64 symm! symm!
-@blis_interface_linalg_lv3_hemm ComplexF64 ComplexF64 Float64 ComplexF64 ComplexF64 symm! symm!
+@blis_interface_linalg_lv3_hemm Float32    ComplexF32 ComplexF32 Float32    ComplexF32 symm! symm!
+@blis_interface_linalg_lv3_hemm Float64    ComplexF64 ComplexF64 Float64    ComplexF64 symm! symm!
+@blis_interface_linalg_lv3_hemm Float64    Float64    ComplexF64 ComplexF64 ComplexF64 symm! symm!
+@blis_interface_linalg_lv3_hemm Float64    ComplexF64 Float64    ComplexF64 ComplexF64 symm! symm!
+@blis_interface_linalg_lv3_hemm ComplexF64 Float64    ComplexF64 ComplexF64 ComplexF64 symm! symm!
+@blis_interface_linalg_lv3_hemm ComplexF64 ComplexF64 Float64    ComplexF64 ComplexF64 symm! symm!
 
 macro blis_interface_linalg_lv3_her2k(Tc1, T1, T2, Tc2, T3, targetfunc, bliname)
 
@@ -200,31 +199,31 @@ macro blis_interface_linalg_lv3_her2k(Tc1, T1, T2, Tc2, T3, targetfunc, bliname)
     end
 end
 
-@blis_interface_linalg_lv3_her2k Float32 Float32 Float32 Float32 Float32 her2k! her2k!
-@blis_interface_linalg_lv3_her2k Float64 Float64 Float64 Float64 Float64 her2k! her2k!
-@blis_interface_linalg_lv3_her2k Float32 Float32 Float32 Float64 Float64 her2k! her2k!
+@blis_interface_linalg_lv3_her2k Float32    Float32    Float32    Float32    Float32    her2k! her2k!
+@blis_interface_linalg_lv3_her2k Float64    Float64    Float64    Float64    Float64    her2k! her2k!
+@blis_interface_linalg_lv3_her2k Float32    Float32    Float32    Float64    Float64    her2k! her2k!
 @blis_interface_linalg_lv3_her2k ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 her2k! her2k!
 @blis_interface_linalg_lv3_her2k ComplexF64 ComplexF64 ComplexF64 ComplexF64 ComplexF64 her2k! her2k!
 @blis_interface_linalg_lv3_her2k ComplexF32 ComplexF32 ComplexF32 ComplexF64 ComplexF64 her2k! her2k!
-@blis_interface_linalg_lv3_her2k Float32 ComplexF32 ComplexF32 Float32 ComplexF32 her2k! her2k!
-@blis_interface_linalg_lv3_her2k Float64 ComplexF64 ComplexF64 Float64 ComplexF64 her2k! her2k!
-@blis_interface_linalg_lv3_her2k Float64 Float64 ComplexF64 ComplexF64 ComplexF64 her2k! her2k!
-@blis_interface_linalg_lv3_her2k Float64 ComplexF64 Float64 ComplexF64 ComplexF64 her2k! her2k!
-@blis_interface_linalg_lv3_her2k ComplexF64 Float64 ComplexF64 ComplexF64 ComplexF64 her2k! her2k!
-@blis_interface_linalg_lv3_her2k ComplexF64 ComplexF64 Float64 ComplexF64 ComplexF64 her2k! her2k!
+@blis_interface_linalg_lv3_her2k Float32    ComplexF32 ComplexF32 Float32    ComplexF32 her2k! her2k!
+@blis_interface_linalg_lv3_her2k Float64    ComplexF64 ComplexF64 Float64    ComplexF64 her2k! her2k!
+@blis_interface_linalg_lv3_her2k Float64    Float64    ComplexF64 ComplexF64 ComplexF64 her2k! her2k!
+@blis_interface_linalg_lv3_her2k Float64    ComplexF64 Float64    ComplexF64 ComplexF64 her2k! her2k!
+@blis_interface_linalg_lv3_her2k ComplexF64 Float64    ComplexF64 ComplexF64 ComplexF64 her2k! her2k!
+@blis_interface_linalg_lv3_her2k ComplexF64 ComplexF64 Float64    ComplexF64 ComplexF64 her2k! her2k!
 
-@blis_interface_linalg_lv3_her2k Float32 Float32 Float32 Float32 Float32 syr2k! syr2k!
-@blis_interface_linalg_lv3_her2k Float64 Float64 Float64 Float64 Float64 syr2k! syr2k!
-@blis_interface_linalg_lv3_her2k Float32 Float32 Float32 Float64 Float64 syr2k! syr2k!
+@blis_interface_linalg_lv3_her2k Float32    Float32    Float32    Float32    Float32    syr2k! syr2k!
+@blis_interface_linalg_lv3_her2k Float64    Float64    Float64    Float64    Float64    syr2k! syr2k!
+@blis_interface_linalg_lv3_her2k Float32    Float32    Float32    Float64    Float64    syr2k! syr2k!
 @blis_interface_linalg_lv3_her2k ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 syr2k! syr2k!
 @blis_interface_linalg_lv3_her2k ComplexF64 ComplexF64 ComplexF64 ComplexF64 ComplexF64 syr2k! syr2k!
 @blis_interface_linalg_lv3_her2k ComplexF32 ComplexF32 ComplexF32 ComplexF64 ComplexF64 syr2k! syr2k!
-@blis_interface_linalg_lv3_her2k Float32 ComplexF32 ComplexF32 Float32 ComplexF32 syr2k! syr2k!
-@blis_interface_linalg_lv3_her2k Float64 ComplexF64 ComplexF64 Float64 ComplexF64 syr2k! syr2k!
-@blis_interface_linalg_lv3_her2k Float64 Float64 ComplexF64 ComplexF64 ComplexF64 syr2k! syr2k!
-@blis_interface_linalg_lv3_her2k Float64 ComplexF64 Float64 ComplexF64 ComplexF64 syr2k! syr2k!
-@blis_interface_linalg_lv3_her2k ComplexF64 Float64 ComplexF64 ComplexF64 ComplexF64 syr2k! syr2k!
-@blis_interface_linalg_lv3_her2k ComplexF64 ComplexF64 Float64 ComplexF64 ComplexF64 syr2k! syr2k!
+@blis_interface_linalg_lv3_her2k Float32    ComplexF32 ComplexF32 Float32    ComplexF32 syr2k! syr2k!
+@blis_interface_linalg_lv3_her2k Float64    ComplexF64 ComplexF64 Float64    ComplexF64 syr2k! syr2k!
+@blis_interface_linalg_lv3_her2k Float64    Float64    ComplexF64 ComplexF64 ComplexF64 syr2k! syr2k!
+@blis_interface_linalg_lv3_her2k Float64    ComplexF64 Float64    ComplexF64 ComplexF64 syr2k! syr2k!
+@blis_interface_linalg_lv3_her2k ComplexF64 Float64    ComplexF64 ComplexF64 ComplexF64 syr2k! syr2k!
+@blis_interface_linalg_lv3_her2k ComplexF64 ComplexF64 Float64    ComplexF64 ComplexF64 syr2k! syr2k!
 
 macro blis_interface_linalg_lv3_herk(Tc1, T1, Tc2, T2, targetfunc, bliname)
 
@@ -270,23 +269,23 @@ macro blis_interface_linalg_lv3_herk(Tc1, T1, Tc2, T2, targetfunc, bliname)
     end
 end
 
-@blis_interface_linalg_lv3_herk Float32 Float32 Float32 Float32 herk! herk!
-@blis_interface_linalg_lv3_herk Float64 Float64 Float64 Float64 herk! herk!
-@blis_interface_linalg_lv3_herk Float32 Float32 Float64 Float64 herk! herk!
+@blis_interface_linalg_lv3_herk Float32    Float32    Float32    Float32    herk! herk!
+@blis_interface_linalg_lv3_herk Float64    Float64    Float64    Float64    herk! herk!
+@blis_interface_linalg_lv3_herk Float32    Float32    Float64    Float64    herk! herk!
 @blis_interface_linalg_lv3_herk ComplexF32 ComplexF32 ComplexF32 ComplexF32 herk! herk!
 @blis_interface_linalg_lv3_herk ComplexF64 ComplexF64 ComplexF64 ComplexF64 herk! herk!
 @blis_interface_linalg_lv3_herk ComplexF32 ComplexF32 ComplexF64 ComplexF64 herk! herk!
-@blis_interface_linalg_lv3_herk Float32 ComplexF32 Float32 ComplexF32 herk! herk!
-@blis_interface_linalg_lv3_herk Float64 ComplexF64 Float64 ComplexF64 herk! herk!
+@blis_interface_linalg_lv3_herk Float32    ComplexF32 Float32    ComplexF32 herk! herk!
+@blis_interface_linalg_lv3_herk Float64    ComplexF64 Float64    ComplexF64 herk! herk!
 
-@blis_interface_linalg_lv3_herk Float32 Float32 Float32 Float32 syrk! syrk!
-@blis_interface_linalg_lv3_herk Float64 Float64 Float64 Float64 syrk! syrk!
-@blis_interface_linalg_lv3_herk Float32 Float32 Float64 Float64 syrk! syrk!
+@blis_interface_linalg_lv3_herk Float32    Float32    Float32    Float32    syrk! syrk!
+@blis_interface_linalg_lv3_herk Float64    Float64    Float64    Float64    syrk! syrk!
+@blis_interface_linalg_lv3_herk Float32    Float32    Float64    Float64    syrk! syrk!
 @blis_interface_linalg_lv3_herk ComplexF32 ComplexF32 ComplexF32 ComplexF32 syrk! syrk!
 @blis_interface_linalg_lv3_herk ComplexF64 ComplexF64 ComplexF64 ComplexF64 syrk! syrk!
 @blis_interface_linalg_lv3_herk ComplexF32 ComplexF32 ComplexF64 ComplexF64 syrk! syrk!
-@blis_interface_linalg_lv3_herk Float32 ComplexF32 Float32 ComplexF32 syrk! syrk!
-@blis_interface_linalg_lv3_herk Float64 ComplexF64 Float64 ComplexF64 syrk! syrk!
+@blis_interface_linalg_lv3_herk Float32    ComplexF32 Float32    ComplexF32 syrk! syrk!
+@blis_interface_linalg_lv3_herk Float64    ComplexF64 Float64    ComplexF64 syrk! syrk!
 
 macro blis_interface_linalg_lv3_trmm(Tc1, T1, T2, targetfunc, bliname)
 
@@ -341,21 +340,21 @@ macro blis_interface_linalg_lv3_trmm(Tc1, T1, T2, targetfunc, bliname)
     end
 end
 
-@blis_interface_linalg_lv3_trmm Float32 Float32 Float32 trmm! trmm!
-@blis_interface_linalg_lv3_trmm Float64 Float64 Float64 trmm! trmm!
-@blis_interface_linalg_lv3_trmm Float32 Float32 Float64 trmm! trmm!
+@blis_interface_linalg_lv3_trmm Float32    Float32    Float32    trmm! trmm!
+@blis_interface_linalg_lv3_trmm Float64    Float64    Float64    trmm! trmm!
+@blis_interface_linalg_lv3_trmm Float32    Float32    Float64    trmm! trmm!
 @blis_interface_linalg_lv3_trmm ComplexF32 ComplexF32 ComplexF32 trmm! trmm!
 @blis_interface_linalg_lv3_trmm ComplexF64 ComplexF64 ComplexF64 trmm! trmm!
 @blis_interface_linalg_lv3_trmm ComplexF32 ComplexF32 ComplexF64 trmm! trmm!
-@blis_interface_linalg_lv3_trmm Float32 ComplexF32 ComplexF32 trmm! trmm!
-@blis_interface_linalg_lv3_trmm Float64 ComplexF64 ComplexF64 trmm! trmm!
+@blis_interface_linalg_lv3_trmm Float32    ComplexF32 ComplexF32 trmm! trmm!
+@blis_interface_linalg_lv3_trmm Float64    ComplexF64 ComplexF64 trmm! trmm!
 
-@blis_interface_linalg_lv3_trmm Float32 Float32 Float32 trsm! trsm!
-@blis_interface_linalg_lv3_trmm Float64 Float64 Float64 trsm! trsm!
-@blis_interface_linalg_lv3_trmm Float32 Float32 Float64 trsm! trsm!
+@blis_interface_linalg_lv3_trmm Float32    Float32    Float32    trsm! trsm!
+@blis_interface_linalg_lv3_trmm Float64    Float64    Float64    trsm! trsm!
+@blis_interface_linalg_lv3_trmm Float32    Float32    Float64    trsm! trsm!
 @blis_interface_linalg_lv3_trmm ComplexF32 ComplexF32 ComplexF32 trsm! trsm!
 @blis_interface_linalg_lv3_trmm ComplexF64 ComplexF64 ComplexF64 trsm! trsm!
 @blis_interface_linalg_lv3_trmm ComplexF32 ComplexF32 ComplexF64 trsm! trsm!
-@blis_interface_linalg_lv3_trmm Float32 ComplexF32 ComplexF32 trsm! trsm!
-@blis_interface_linalg_lv3_trmm Float64 ComplexF64 ComplexF64 trsm! trsm!
+@blis_interface_linalg_lv3_trmm Float32    ComplexF32 ComplexF32 trsm! trsm!
+@blis_interface_linalg_lv3_trmm Float64    ComplexF64 ComplexF64 trsm! trsm!
 
