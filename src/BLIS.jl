@@ -71,16 +71,10 @@ end
 
 # LinearAlgebra BLAS interface.
 module BLASInterface
-import ..LinearAlgebra.BLAS: gemm!
-import ..LinearAlgebra.BLAS: hemm!
-import ..LinearAlgebra.BLAS: symm!
-import ..LinearAlgebra.BLAS: trmm!
-import ..LinearAlgebra.BLAS: trsm!
-import ..LinearAlgebra.BLAS: herk!
-import ..LinearAlgebra.BLAS: syrk!
-import ..LinearAlgebra.BLAS: her2k!
-import ..LinearAlgebra.BLAS: syr2k!
+import ..LinearAlgebra.BLAS: gemm!, hemm!, symm!, trmm!, trsm!, herk!, syrk!, her2k!, syr2k!
+import ..LinearAlgebra.BLAS: gemv!, hemv!, symv!, trmv!, trsv!, ger!, her!, syr!
 export gemm!, hemm!, symm!, trmm!, trsm!, herk!, syrk!, her2k!, syr2k!
+export gemv!, hemv!, symv!, trmv!, trsv!, ger!, her!, syr!
 using ..TypedBackend
 using ..ObjectBackend
 using ..Types
@@ -90,6 +84,7 @@ using ..Types: BliTrans, BliConj, BliUpLo, BliSide, BliDiag, BliInvDiag, BliStru
 using ..Types: BliCompatibleType
 using ..Types: BLIS_TRANS_BIT
 include("interface_linalg/level3.jl")
+include("interface_linalg/level2.jl")
 end
 
 end
