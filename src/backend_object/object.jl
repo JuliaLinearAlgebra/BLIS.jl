@@ -72,6 +72,21 @@ BliObj(A::StridedMatrix{T}) where {T<:BliCompatibleType} = begin
     objA
 end
 
+" Object from strided vector. "
+BliObj(x::StridedVector{T}) where {T<:BliCompatibleType} = begin
+    mx, = size(x)
+    incx, = strides(x)
+    dt = ctype_to_bli_num[T]
+
+    objx = BliObj(BliObjBase(), Ref(x))
+    # Creation of vector buffer is roughly the same as matrix.
+    bli_obj_create_with_attached_buffer!(dt, mx, 1,
+                                         unsafe_convert(Ptr{Nothing}, x), incx, mx*incx,
+                                         objx.obj)
+
+    objx
+end
+
 " Object from scalar number. "
 BliObj(γ::T) where {T<:BliCompatibleType} = begin
     dtγ = ctype_to_bli_num[T]
