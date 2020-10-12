@@ -143,7 +143,7 @@ macro blis_interface_linalg_lv2_trmv(T1, T2, targetfunc, bliname)
     return quote
 
         """
-        tr?v!(ul, tA, dA, A, b)
+            tr?v!(ul, tA, dA, A, b)
         BLIS-based TRMV/TRSV with strides support & mixed-precision.
         """
         $(esc(targetfunc))(ul::AbstractChar,

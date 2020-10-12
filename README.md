@@ -10,7 +10,7 @@ This repository to provides:
   
 
 ## Installation
-```julia
+```
 ]add https://github.com/xrq-phys/BLIS.jl
 ```
 
@@ -18,7 +18,7 @@ This repository to provides:
 
 ### LinearAlgebra Frontend
 
-**WIP** The first thing BLIS.jl provides is a linear algebra frontend which resembles BLAS functions very much akin to `LinearAlgebra.BLAS.gemm!`, but defined for both column-major and generic strided matrices (namely all `strides(A)[1] >= 1`). An example for direct computation of generic strided case could be:
+The first thing BLIS.jl provides is a linear algebra frontend which resembles BLAS functions very much akin to `LinearAlgebra.BLAS.gemm!`, but defined for both column-major and generic strided matrices (namely all `strides(A)[1] >= 1`). An example for direct computation of generic strided case could be:
 
 ```julia
 using BLIS
@@ -35,6 +35,10 @@ wC = view(C, 1:2:4, 1:2:4);
 # directly without reallocating wA, wB or wC to other arrays.
 BLASInterface.gemm!('N', 'N', 1.0+0im, wA, wB, 1.0+0im, wC)
 ```
+
+Mixed precision is also directly supported by this interface.
+
+As BLAS interface defined by Julia's `LinearAlgebra.BLAS` is a few routines beyond standard BLAS, [here is a list for status of support](src/interface_linalg/ABOUT.md).
 
 ### BLIS Typed Backend
 
@@ -92,8 +96,6 @@ C
 
 ## Roadmaps
 
-- Implement `LinearAlgebra.BLAS` frontend against the object interface to enable mixed precision support.
-- Define all `LinearAlgebra.BLAS`-compatible frontends.
 - Define interface methods like `Base.*` and `Base.mul!` for basic
   Julia types like `Array` and `StridedArray`.
 - Provide option to set BLIS as BLAS provider.
