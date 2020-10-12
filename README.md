@@ -22,7 +22,7 @@ The first thing BLIS.jl provides is a linear algebra frontend which resembles BL
 
 ```julia
 using BLIS
-using BLIS.BLASInterface
+
 A = rand(ComplexF64, 4, 4);
 B = rand(ComplexF64, 4, 4);
 C = ones(ComplexF64, 4, 4);
@@ -30,10 +30,16 @@ C = ones(ComplexF64, 4, 4);
 wA = view(A, 1:2:4, 1:2:4);
 wB = view(B, 1:2:4, 1:2:4);
 wC = view(C, 1:2:4, 1:2:4);
-# This call then computes 2×2×2 product:
+# wA * wB' can be directly computed via:
+sC = wA * wB';
+# without reallocating wA or wB to other arrays as
+# mul! is overriden to call BLIS within this module.
+
+# One can also use the same gemm! as provided in
+# LinearAlgebra.BLAS to compute this 2×2×2 product:
 #  wA*wB -> wC
-# directly without reallocating wA, wB or wC to other arrays.
-BLASInterface.gemm!('N', 'N', 1.0+0im, wA, wB, 1.0+0im, wC)
+BLIS.BLASInterface.gemm!('N', 'N', 1.0+0im, wA, wB, 1.0+0im, wC)
+# Note that storage target can also be generic-strided.
 ```
 
 Mixed precision is also directly supported by this interface.

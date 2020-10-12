@@ -74,9 +74,11 @@ module BLASInterface
 import ..LinearAlgebra.BLAS: gemm!, hemm!, symm!, trmm!, trsm!, herk!, syrk!, her2k!, syr2k!
 import ..LinearAlgebra.BLAS: gemv!, hemv!, symv!, trmv!, trsv!, ger!, her!, syr!
 import ..LinearAlgebra.BLAS: axpby!, axpy!, scal!, blascopy!
+import ..LinearAlgebra: Adjoint, mul!
 export gemm!, hemm!, symm!, trmm!, trsm!, herk!, syrk!, her2k!, syr2k!
 export gemv!, hemv!, symv!, trmv!, trsv!, ger!, her!, syr!
 export axpby!, axpy!, scal!, blascopy!
+export mul!
 using ..TypedBackend
 using ..ObjectBackend
 using ..Types
@@ -88,6 +90,8 @@ using ..Types: BLIS_TRANS_BIT
 include("interface_linalg/level3.jl")
 include("interface_linalg/level2.jl")
 include("interface_linalg/level1.jl")
+# mul! dispatcher, wrapped within BLASInterface submodule.
+include("interface_linalg/mmul.jl")
 end
 
 end
