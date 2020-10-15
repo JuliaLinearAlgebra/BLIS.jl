@@ -57,7 +57,7 @@ using ..Types: BliTrans, BliConj, BliUpLo, BliSide, BliDiag, BliInvDiag, BliStru
 using ..Types: BLIS_CONJTRANS_BITS, BLIS_DATATYPE_BITS, BLIS_DOMAIN_BIT, BLIS_PRECISION_BIT
 using ..Types: BLIS_CONJTRANS_BITS, BLIS_TRANS_BIT, BLIS_CONJ_BIT, BLIS_UPLO_BITS
 using ..Types: BLIS_UPPER_BIT, BLIS_DIAG_BIT, BLIS_LOWER_BIT, BLIS_UNIT_DIAG_BIT
-using ..Types: BLIS_INVERT_DIAG_BIT
+using ..Types: BLIS_INVERT_DIAG_BIT, BLIS_STRUC_BITS
 include("backend_object/object.jl")
 include("backend_object/common.jl")
 include("backend_object/level1v.jl")

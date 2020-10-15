@@ -221,3 +221,8 @@ bli_obj_set_invert_diag!(id::BliInvDiag,
                                                                    BliObjBits(id.enum),
                                                                    obj)
 
+bli_obj_set_struc!(st::BliStruc,
+                   obj::BliObjBase) = bli_obj_set_info_bits!(BLIS_STRUC_BITS,
+                                                             BliObjBits(st.enum),
+                                                             obj)
+

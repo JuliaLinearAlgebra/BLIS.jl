@@ -68,7 +68,7 @@ end
 @blis_interface_linalg_lv2_gemv ComplexF64 Float64    ComplexF64 ComplexF64 ComplexF64 gemv! gemv!
 @blis_interface_linalg_lv2_gemv ComplexF64 ComplexF64 Float64    ComplexF64 ComplexF64 gemv! gemv!
 
-macro blis_interface_linalg_lv2_hemv(Tc1, T1, T2, Tc2, T3, targetfunc, bliname)
+macro blis_interface_linalg_lv2_hemv(Tc1, T1, T2, Tc2, T3, targetfunc, bliname, bli_struc)
 
     # Get method for the object API backend.
     blifuncname = Symbol("bli_", bliname)
@@ -101,6 +101,7 @@ macro blis_interface_linalg_lv2_hemv(Tc1, T1, T2, Tc2, T3, targetfunc, bliname)
             oy = BliObj(y)
 
             ObjectBackend.bli_obj_set_uplo!(bli_ul, oA)
+            ObjectBackend.bli_obj_set_struc!($bli_struc, oA.obj)
             $blifunc(oα, oA, ox, oβ, oy)
             y
 
@@ -108,31 +109,31 @@ macro blis_interface_linalg_lv2_hemv(Tc1, T1, T2, Tc2, T3, targetfunc, bliname)
     end
 end
 
-@blis_interface_linalg_lv2_hemv Float32    Float32    Float32    Float32    Float32    hemv! hemv!
-@blis_interface_linalg_lv2_hemv Float64    Float64    Float64    Float64    Float64    hemv! hemv!
-@blis_interface_linalg_lv2_hemv Float32    Float32    Float32    Float64    Float64    hemv! hemv!
-@blis_interface_linalg_lv2_hemv ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 hemv! hemv!
-@blis_interface_linalg_lv2_hemv ComplexF64 ComplexF64 ComplexF64 ComplexF64 ComplexF64 hemv! hemv!
-@blis_interface_linalg_lv2_hemv ComplexF32 ComplexF32 ComplexF32 ComplexF64 ComplexF64 hemv! hemv!
-@blis_interface_linalg_lv2_hemv Float32    ComplexF32 ComplexF32 Float32    ComplexF32 hemv! hemv!
-@blis_interface_linalg_lv2_hemv Float64    ComplexF64 ComplexF64 Float64    ComplexF64 hemv! hemv!
-@blis_interface_linalg_lv2_hemv Float64    Float64    ComplexF64 ComplexF64 ComplexF64 hemv! hemv!
-@blis_interface_linalg_lv2_hemv Float64    ComplexF64 Float64    ComplexF64 ComplexF64 hemv! hemv!
-@blis_interface_linalg_lv2_hemv ComplexF64 Float64    ComplexF64 ComplexF64 ComplexF64 hemv! hemv!
-@blis_interface_linalg_lv2_hemv ComplexF64 ComplexF64 Float64    ComplexF64 ComplexF64 hemv! hemv!
+@blis_interface_linalg_lv2_hemv Float32    Float32    Float32    Float32    Float32    hemv! hemv! BLIS_HERMITIAN
+@blis_interface_linalg_lv2_hemv Float64    Float64    Float64    Float64    Float64    hemv! hemv! BLIS_HERMITIAN
+@blis_interface_linalg_lv2_hemv Float32    Float32    Float32    Float64    Float64    hemv! hemv! BLIS_HERMITIAN
+@blis_interface_linalg_lv2_hemv ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 hemv! hemv! BLIS_HERMITIAN
+@blis_interface_linalg_lv2_hemv ComplexF64 ComplexF64 ComplexF64 ComplexF64 ComplexF64 hemv! hemv! BLIS_HERMITIAN
+@blis_interface_linalg_lv2_hemv ComplexF32 ComplexF32 ComplexF32 ComplexF64 ComplexF64 hemv! hemv! BLIS_HERMITIAN
+@blis_interface_linalg_lv2_hemv Float32    ComplexF32 ComplexF32 Float32    ComplexF32 hemv! hemv! BLIS_HERMITIAN
+@blis_interface_linalg_lv2_hemv Float64    ComplexF64 ComplexF64 Float64    ComplexF64 hemv! hemv! BLIS_HERMITIAN
+@blis_interface_linalg_lv2_hemv Float64    Float64    ComplexF64 ComplexF64 ComplexF64 hemv! hemv! BLIS_HERMITIAN
+@blis_interface_linalg_lv2_hemv Float64    ComplexF64 Float64    ComplexF64 ComplexF64 hemv! hemv! BLIS_HERMITIAN
+@blis_interface_linalg_lv2_hemv ComplexF64 Float64    ComplexF64 ComplexF64 ComplexF64 hemv! hemv! BLIS_HERMITIAN
+@blis_interface_linalg_lv2_hemv ComplexF64 ComplexF64 Float64    ComplexF64 ComplexF64 hemv! hemv! BLIS_HERMITIAN
 
-@blis_interface_linalg_lv2_hemv Float32    Float32    Float32    Float32    Float32    symv! symv!
-@blis_interface_linalg_lv2_hemv Float64    Float64    Float64    Float64    Float64    symv! symv!
-@blis_interface_linalg_lv2_hemv Float32    Float32    Float32    Float64    Float64    symv! symv!
-@blis_interface_linalg_lv2_hemv ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 symv! symv!
-@blis_interface_linalg_lv2_hemv ComplexF64 ComplexF64 ComplexF64 ComplexF64 ComplexF64 symv! symv!
-@blis_interface_linalg_lv2_hemv ComplexF32 ComplexF32 ComplexF32 ComplexF64 ComplexF64 symv! symv!
-@blis_interface_linalg_lv2_hemv Float32    ComplexF32 ComplexF32 Float32    ComplexF32 symv! symv!
-@blis_interface_linalg_lv2_hemv Float64    ComplexF64 ComplexF64 Float64    ComplexF64 symv! symv!
-@blis_interface_linalg_lv2_hemv Float64    Float64    ComplexF64 ComplexF64 ComplexF64 symv! symv!
-@blis_interface_linalg_lv2_hemv Float64    ComplexF64 Float64    ComplexF64 ComplexF64 symv! symv!
-@blis_interface_linalg_lv2_hemv ComplexF64 Float64    ComplexF64 ComplexF64 ComplexF64 symv! symv!
-@blis_interface_linalg_lv2_hemv ComplexF64 ComplexF64 Float64    ComplexF64 ComplexF64 symv! symv!
+@blis_interface_linalg_lv2_hemv Float32    Float32    Float32    Float32    Float32    symv! symv! BLIS_SYMMETRIC
+@blis_interface_linalg_lv2_hemv Float64    Float64    Float64    Float64    Float64    symv! symv! BLIS_SYMMETRIC
+@blis_interface_linalg_lv2_hemv Float32    Float32    Float32    Float64    Float64    symv! symv! BLIS_SYMMETRIC
+@blis_interface_linalg_lv2_hemv ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 symv! symv! BLIS_SYMMETRIC
+@blis_interface_linalg_lv2_hemv ComplexF64 ComplexF64 ComplexF64 ComplexF64 ComplexF64 symv! symv! BLIS_SYMMETRIC
+@blis_interface_linalg_lv2_hemv ComplexF32 ComplexF32 ComplexF32 ComplexF64 ComplexF64 symv! symv! BLIS_SYMMETRIC
+@blis_interface_linalg_lv2_hemv Float32    ComplexF32 ComplexF32 Float32    ComplexF32 symv! symv! BLIS_SYMMETRIC
+@blis_interface_linalg_lv2_hemv Float64    ComplexF64 ComplexF64 Float64    ComplexF64 symv! symv! BLIS_SYMMETRIC
+@blis_interface_linalg_lv2_hemv Float64    Float64    ComplexF64 ComplexF64 ComplexF64 symv! symv! BLIS_SYMMETRIC
+@blis_interface_linalg_lv2_hemv Float64    ComplexF64 Float64    ComplexF64 ComplexF64 symv! symv! BLIS_SYMMETRIC
+@blis_interface_linalg_lv2_hemv ComplexF64 Float64    ComplexF64 ComplexF64 ComplexF64 symv! symv! BLIS_SYMMETRIC
+@blis_interface_linalg_lv2_hemv ComplexF64 ComplexF64 Float64    ComplexF64 ComplexF64 symv! symv! BLIS_SYMMETRIC
 
 macro blis_interface_linalg_lv2_trmv(T1, T2, targetfunc, bliname)
 
@@ -237,7 +238,7 @@ end
 @blis_interface_linalg_lv2_ger ComplexF64 Float64    ComplexF64 ComplexF64 ger! ger!
 @blis_interface_linalg_lv2_ger ComplexF64 ComplexF64 Float64    ComplexF64 ger! ger!
 
-macro blis_interface_linalg_lv2_her(Tc1, T1, T2, targetfunc, bliname)
+macro blis_interface_linalg_lv2_her(Tc1, T1, T2, targetfunc, bliname, bli_struc)
 
     # Get method for the object API backend.
     blifuncname = Symbol("bli_", bliname)
@@ -266,6 +267,7 @@ macro blis_interface_linalg_lv2_her(Tc1, T1, T2, targetfunc, bliname)
             oA = BliObj(A)
 
             ObjectBackend.bli_obj_set_uplo!(bli_ul, oA)
+            ObjectBackend.bli_obj_set_struc!($bli_struc, oA.obj)
             $blifunc(oα, ox, oA)
             A
 
@@ -273,19 +275,19 @@ macro blis_interface_linalg_lv2_her(Tc1, T1, T2, targetfunc, bliname)
     end
 end
 
-@blis_interface_linalg_lv2_her Float32    Float32    Float32    syr! syr!
-@blis_interface_linalg_lv2_her Float64    Float64    Float64    syr! syr!
-@blis_interface_linalg_lv2_her Float32    Float32    Float64    syr! syr!
-@blis_interface_linalg_lv2_her ComplexF32 ComplexF32 ComplexF32 syr! syr!
-@blis_interface_linalg_lv2_her ComplexF64 ComplexF64 ComplexF64 syr! syr!
-@blis_interface_linalg_lv2_her Float64    Float64    ComplexF64 syr! syr!
-@blis_interface_linalg_lv2_her ComplexF64 Float64    ComplexF64 syr! syr!
-@blis_interface_linalg_lv2_her Float64    ComplexF64 ComplexF64 syr! syr!
+@blis_interface_linalg_lv2_her Float32    Float32    Float32    syr! syr! BLIS_SYMMETRIC
+@blis_interface_linalg_lv2_her Float64    Float64    Float64    syr! syr! BLIS_SYMMETRIC
+@blis_interface_linalg_lv2_her Float32    Float32    Float64    syr! syr! BLIS_SYMMETRIC
+@blis_interface_linalg_lv2_her ComplexF32 ComplexF32 ComplexF32 syr! syr! BLIS_SYMMETRIC
+@blis_interface_linalg_lv2_her ComplexF64 ComplexF64 ComplexF64 syr! syr! BLIS_SYMMETRIC
+@blis_interface_linalg_lv2_her Float64    Float64    ComplexF64 syr! syr! BLIS_SYMMETRIC
+@blis_interface_linalg_lv2_her ComplexF64 Float64    ComplexF64 syr! syr! BLIS_SYMMETRIC
+@blis_interface_linalg_lv2_her Float64    ComplexF64 ComplexF64 syr! syr! BLIS_SYMMETRIC
 
-@blis_interface_linalg_lv2_her Float32    Float32    Float32    her! her!
-@blis_interface_linalg_lv2_her Float64    Float64    Float64    her! her!
-@blis_interface_linalg_lv2_her Float32    Float32    Float64    her! her!
-@blis_interface_linalg_lv2_her Float32    ComplexF32 ComplexF32 her! her!
-@blis_interface_linalg_lv2_her Float64    ComplexF64 ComplexF64 her! her!
-@blis_interface_linalg_lv2_her Float64    Float64    ComplexF64 her! her!
+@blis_interface_linalg_lv2_her Float32    Float32    Float32    her! her! BLIS_HERMITIAN
+@blis_interface_linalg_lv2_her Float64    Float64    Float64    her! her! BLIS_HERMITIAN
+@blis_interface_linalg_lv2_her Float32    Float32    Float64    her! her! BLIS_HERMITIAN
+@blis_interface_linalg_lv2_her Float32    ComplexF32 ComplexF32 her! her! BLIS_HERMITIAN
+@blis_interface_linalg_lv2_her Float64    ComplexF64 ComplexF64 her! her! BLIS_HERMITIAN
+@blis_interface_linalg_lv2_her Float64    Float64    ComplexF64 her! her! BLIS_HERMITIAN
 
