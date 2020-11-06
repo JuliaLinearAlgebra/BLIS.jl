@@ -37,10 +37,10 @@ macro blis_interface_linalg_lv3_gemm(Tc1, T1, T2, Tc2, T3, targetfunc, bliname)
         $(esc(targetfunc))(tA::AbstractChar,
                            tB::AbstractChar,
                            α::$Tc1,
-                           A::StridedMatrix{$T1},
-                           B::StridedMatrix{$T2},
+                           A::StridedVecOrMat{<:$T1},
+                           B::StridedVecOrMat{<:$T2},
                            β::$Tc2,
-                           C::StridedMatrix{$T3}) = begin
+                           C::StridedVecOrMat{<:$T3}) = begin
 
             bli_tA = char_to_trans[tA]
             bli_tB = char_to_trans[tB]
@@ -65,20 +65,25 @@ macro blis_interface_linalg_lv3_gemm(Tc1, T1, T2, Tc2, T3, targetfunc, bliname)
     end
 end
 
+@blis_interface_linalg_lv3_gemm(BliCompatibleType,
+                                BliCompatibleType,
+                                BliCompatibleType,
+                                BliCompatibleType,
+                                BliCompatibleType,
+                                gemm!, gemm!)
 # To avoid obfuscating with LinearAlgebra.gemm!,
 #  instantiate more specifically.
 @blis_interface_linalg_lv3_gemm Float32    Float32    Float32    Float32    Float32    gemm! gemm!
 @blis_interface_linalg_lv3_gemm Float64    Float64    Float64    Float64    Float64    gemm! gemm!
-@blis_interface_linalg_lv3_gemm Float32    Float32    Float32    Float64    Float64    gemm! gemm!
 @blis_interface_linalg_lv3_gemm ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 gemm! gemm!
 @blis_interface_linalg_lv3_gemm ComplexF64 ComplexF64 ComplexF64 ComplexF64 ComplexF64 gemm! gemm!
-@blis_interface_linalg_lv3_gemm ComplexF32 ComplexF32 ComplexF32 ComplexF64 ComplexF64 gemm! gemm!
-@blis_interface_linalg_lv3_gemm Float32    ComplexF32 ComplexF32 Float32    ComplexF32 gemm! gemm!
-@blis_interface_linalg_lv3_gemm Float64    ComplexF64 ComplexF64 Float64    ComplexF64 gemm! gemm!
-@blis_interface_linalg_lv3_gemm Float64    Float64    ComplexF64 ComplexF64 ComplexF64 gemm! gemm!
-@blis_interface_linalg_lv3_gemm Float64    ComplexF64 Float64    ComplexF64 ComplexF64 gemm! gemm!
-@blis_interface_linalg_lv3_gemm ComplexF64 Float64    ComplexF64 ComplexF64 ComplexF64 gemm! gemm!
-@blis_interface_linalg_lv3_gemm ComplexF64 ComplexF64 Float64    ComplexF64 ComplexF64 gemm! gemm!
+
+# Do this for gemm_wrapper! as well.
+# Direct overriding triggers warning.
+@blis_interface_linalg_lv3_gemm_wrapper Float32    Float32    Float32
+@blis_interface_linalg_lv3_gemm_wrapper Float64    Float64    Float64
+@blis_interface_linalg_lv3_gemm_wrapper ComplexF32 ComplexF32 ComplexF32
+@blis_interface_linalg_lv3_gemm_wrapper ComplexF64 ComplexF64 ComplexF64
 
 macro blis_interface_linalg_lv3_hemm(Tc1, T1, T2, Tc2, T3, targetfunc, bliname, bli_struc)
 
@@ -95,10 +100,10 @@ macro blis_interface_linalg_lv3_hemm(Tc1, T1, T2, Tc2, T3, targetfunc, bliname, 
         $(esc(targetfunc))(si::AbstractChar,
                            ul::AbstractChar,
                            α::$Tc1,
-                           A::StridedMatrix{$T1},
-                           B::StridedMatrix{$T2},
+                           A::StridedMatrix{<:$T1},
+                           B::StridedMatrix{<:$T2},
                            β::$Tc2,
-                           C::StridedMatrix{$T3}) = begin
+                           C::StridedMatrix{<:$T3}) = begin
 
             bli_si = char_to_side[si]
             bli_ul = char_to_uplo[ul]
@@ -130,31 +135,29 @@ macro blis_interface_linalg_lv3_hemm(Tc1, T1, T2, Tc2, T3, targetfunc, bliname, 
     end
 end
 
+@blis_interface_linalg_lv3_hemm(BliCompatibleType,
+                                BliCompatibleType,
+                                BliCompatibleType,
+                                BliCompatibleType,
+                                BliCompatibleType,
+                                hemm!, hemm!,
+                                BLIS_HERMITIAN)
 @blis_interface_linalg_lv3_hemm Float32    Float32    Float32    Float32    Float32    hemm! hemm! BLIS_HERMITIAN
 @blis_interface_linalg_lv3_hemm Float64    Float64    Float64    Float64    Float64    hemm! hemm! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_hemm Float32    Float32    Float32    Float64    Float64    hemm! hemm! BLIS_HERMITIAN
 @blis_interface_linalg_lv3_hemm ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 hemm! hemm! BLIS_HERMITIAN
 @blis_interface_linalg_lv3_hemm ComplexF64 ComplexF64 ComplexF64 ComplexF64 ComplexF64 hemm! hemm! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_hemm ComplexF32 ComplexF32 ComplexF32 ComplexF64 ComplexF64 hemm! hemm! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_hemm Float32    ComplexF32 ComplexF32 Float32    ComplexF32 hemm! hemm! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_hemm Float64    ComplexF64 ComplexF64 Float64    ComplexF64 hemm! hemm! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_hemm Float64    Float64    ComplexF64 ComplexF64 ComplexF64 hemm! hemm! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_hemm Float64    ComplexF64 Float64    ComplexF64 ComplexF64 hemm! hemm! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_hemm ComplexF64 Float64    ComplexF64 ComplexF64 ComplexF64 hemm! hemm! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_hemm ComplexF64 ComplexF64 Float64    ComplexF64 ComplexF64 hemm! hemm! BLIS_HERMITIAN
 
+@blis_interface_linalg_lv3_hemm(BliCompatibleType,
+                                BliCompatibleType,
+                                BliCompatibleType,
+                                BliCompatibleType,
+                                BliCompatibleType,
+                                symm!, symm!,
+                                BLIS_SYMMETRIC)
 @blis_interface_linalg_lv3_hemm Float32    Float32    Float32    Float32    Float32    symm! symm! BLIS_SYMMETRIC
 @blis_interface_linalg_lv3_hemm Float64    Float64    Float64    Float64    Float64    symm! symm! BLIS_SYMMETRIC
-@blis_interface_linalg_lv3_hemm Float32    Float32    Float32    Float64    Float64    symm! symm! BLIS_SYMMETRIC
 @blis_interface_linalg_lv3_hemm ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 symm! symm! BLIS_SYMMETRIC
 @blis_interface_linalg_lv3_hemm ComplexF64 ComplexF64 ComplexF64 ComplexF64 ComplexF64 symm! symm! BLIS_SYMMETRIC
-@blis_interface_linalg_lv3_hemm ComplexF32 ComplexF32 ComplexF32 ComplexF64 ComplexF64 symm! symm! BLIS_SYMMETRIC
-@blis_interface_linalg_lv3_hemm Float32    ComplexF32 ComplexF32 Float32    ComplexF32 symm! symm! BLIS_SYMMETRIC
-@blis_interface_linalg_lv3_hemm Float64    ComplexF64 ComplexF64 Float64    ComplexF64 symm! symm! BLIS_SYMMETRIC
-@blis_interface_linalg_lv3_hemm Float64    Float64    ComplexF64 ComplexF64 ComplexF64 symm! symm! BLIS_SYMMETRIC
-@blis_interface_linalg_lv3_hemm Float64    ComplexF64 Float64    ComplexF64 ComplexF64 symm! symm! BLIS_SYMMETRIC
-@blis_interface_linalg_lv3_hemm ComplexF64 Float64    ComplexF64 ComplexF64 ComplexF64 symm! symm! BLIS_SYMMETRIC
-@blis_interface_linalg_lv3_hemm ComplexF64 ComplexF64 Float64    ComplexF64 ComplexF64 symm! symm! BLIS_SYMMETRIC
 
 macro blis_interface_linalg_lv3_her2k(Tc1, T1, T2, Tc2, T3, targetfunc, bliname, bli_struc)
 
@@ -171,10 +174,10 @@ macro blis_interface_linalg_lv3_her2k(Tc1, T1, T2, Tc2, T3, targetfunc, bliname,
         $(esc(targetfunc))(ul::AbstractChar,
                            tAB::AbstractChar,
                            α::$Tc1,
-                           A::StridedMatrix{$T1},
-                           B::StridedMatrix{$T2},
+                           A::StridedMatrix{<:$T1},
+                           B::StridedMatrix{<:$T2},
                            β::$Tc2,
-                           C::StridedMatrix{$T3}) = begin
+                           C::StridedMatrix{<:$T3}) = begin
 
             bli_ul = char_to_uplo[ul]
             bli_tAB = char_to_side[tAB]
@@ -201,31 +204,29 @@ macro blis_interface_linalg_lv3_her2k(Tc1, T1, T2, Tc2, T3, targetfunc, bliname,
     end
 end
 
+@blis_interface_linalg_lv3_her2k(BliCompatibleType,
+                                 BliCompatibleType,
+                                 BliCompatibleType,
+                                 BliCompatibleType,
+                                 BliCompatibleType,
+                                 her2k!, her2k!,
+                                 BLIS_HERMITIAN)
 @blis_interface_linalg_lv3_her2k Float32    Float32    Float32    Float32    Float32    her2k! her2k! BLIS_HERMITIAN
 @blis_interface_linalg_lv3_her2k Float64    Float64    Float64    Float64    Float64    her2k! her2k! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_her2k Float32    Float32    Float32    Float64    Float64    her2k! her2k! BLIS_HERMITIAN
 @blis_interface_linalg_lv3_her2k ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 her2k! her2k! BLIS_HERMITIAN
 @blis_interface_linalg_lv3_her2k ComplexF64 ComplexF64 ComplexF64 ComplexF64 ComplexF64 her2k! her2k! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_her2k ComplexF32 ComplexF32 ComplexF32 ComplexF64 ComplexF64 her2k! her2k! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_her2k Float32    ComplexF32 ComplexF32 Float32    ComplexF32 her2k! her2k! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_her2k Float64    ComplexF64 ComplexF64 Float64    ComplexF64 her2k! her2k! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_her2k Float64    Float64    ComplexF64 ComplexF64 ComplexF64 her2k! her2k! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_her2k Float64    ComplexF64 Float64    ComplexF64 ComplexF64 her2k! her2k! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_her2k ComplexF64 Float64    ComplexF64 ComplexF64 ComplexF64 her2k! her2k! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_her2k ComplexF64 ComplexF64 Float64    ComplexF64 ComplexF64 her2k! her2k! BLIS_HERMITIAN
 
+@blis_interface_linalg_lv3_her2k(BliCompatibleType,
+                                 BliCompatibleType,
+                                 BliCompatibleType,
+                                 BliCompatibleType,
+                                 BliCompatibleType,
+                                 syr2k!, syr2k!,
+                                 BLIS_SYMMETRIC)
 @blis_interface_linalg_lv3_her2k Float32    Float32    Float32    Float32    Float32    syr2k! syr2k! BLIS_SYMMETRIC
 @blis_interface_linalg_lv3_her2k Float64    Float64    Float64    Float64    Float64    syr2k! syr2k! BLIS_SYMMETRIC
-@blis_interface_linalg_lv3_her2k Float32    Float32    Float32    Float64    Float64    syr2k! syr2k! BLIS_SYMMETRIC
 @blis_interface_linalg_lv3_her2k ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 syr2k! syr2k! BLIS_SYMMETRIC
 @blis_interface_linalg_lv3_her2k ComplexF64 ComplexF64 ComplexF64 ComplexF64 ComplexF64 syr2k! syr2k! BLIS_SYMMETRIC
-@blis_interface_linalg_lv3_her2k ComplexF32 ComplexF32 ComplexF32 ComplexF64 ComplexF64 syr2k! syr2k! BLIS_SYMMETRIC
-@blis_interface_linalg_lv3_her2k Float32    ComplexF32 ComplexF32 Float32    ComplexF32 syr2k! syr2k! BLIS_SYMMETRIC
-@blis_interface_linalg_lv3_her2k Float64    ComplexF64 ComplexF64 Float64    ComplexF64 syr2k! syr2k! BLIS_SYMMETRIC
-@blis_interface_linalg_lv3_her2k Float64    Float64    ComplexF64 ComplexF64 ComplexF64 syr2k! syr2k! BLIS_SYMMETRIC
-@blis_interface_linalg_lv3_her2k Float64    ComplexF64 Float64    ComplexF64 ComplexF64 syr2k! syr2k! BLIS_SYMMETRIC
-@blis_interface_linalg_lv3_her2k ComplexF64 Float64    ComplexF64 ComplexF64 ComplexF64 syr2k! syr2k! BLIS_SYMMETRIC
-@blis_interface_linalg_lv3_her2k ComplexF64 ComplexF64 Float64    ComplexF64 ComplexF64 syr2k! syr2k! BLIS_SYMMETRIC
 
 macro blis_interface_linalg_lv3_herk(Tc1, T1, Tc2, T2, targetfunc, bliname, bli_struc)
 
@@ -242,12 +243,9 @@ macro blis_interface_linalg_lv3_herk(Tc1, T1, Tc2, T2, targetfunc, bliname, bli_
         $(esc(targetfunc))(ul::AbstractChar,
                            tA::AbstractChar,
                            α::$Tc1,
-                           A::StridedMatrix{$T1},
+                           A::StridedMatrix{<:$T1},
                            β::$Tc2,
-                           C::StridedMatrix{$T2}) where {T1<:BliCompatibleType,
-                                                        T2<:BliCompatibleType,
-                                                        Tc1<:BliCompatibleType,
-                                                        Tc2<:BliCompatibleType} = begin
+                           C::StridedMatrix{<:$T2}) = begin
 
             bli_ul = char_to_uplo[ul]
             bli_tA = char_to_side[tA]
@@ -272,23 +270,27 @@ macro blis_interface_linalg_lv3_herk(Tc1, T1, Tc2, T2, targetfunc, bliname, bli_
     end
 end
 
+@blis_interface_linalg_lv3_herk(BliCompatibleType,
+                                BliCompatibleType,
+                                BliCompatibleType,
+                                BliCompatibleType,
+                                herk!, herk!,
+                                BLIS_HERMITIAN)
 @blis_interface_linalg_lv3_herk Float32    Float32    Float32    Float32    herk! herk! BLIS_HERMITIAN
 @blis_interface_linalg_lv3_herk Float64    Float64    Float64    Float64    herk! herk! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_herk Float32    Float32    Float64    Float64    herk! herk! BLIS_HERMITIAN
 @blis_interface_linalg_lv3_herk ComplexF32 ComplexF32 ComplexF32 ComplexF32 herk! herk! BLIS_HERMITIAN
 @blis_interface_linalg_lv3_herk ComplexF64 ComplexF64 ComplexF64 ComplexF64 herk! herk! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_herk ComplexF32 ComplexF32 ComplexF64 ComplexF64 herk! herk! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_herk Float32    ComplexF32 Float32    ComplexF32 herk! herk! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_herk Float64    ComplexF64 Float64    ComplexF64 herk! herk! BLIS_HERMITIAN
 
+@blis_interface_linalg_lv3_herk(BliCompatibleType,
+                                BliCompatibleType,
+                                BliCompatibleType,
+                                BliCompatibleType,
+                                syrk!, syrk!,
+                                BLIS_SYMMETRIC)
 @blis_interface_linalg_lv3_herk Float32    Float32    Float32    Float32    syrk! syrk! BLIS_SYMMETRIC
 @blis_interface_linalg_lv3_herk Float64    Float64    Float64    Float64    syrk! syrk! BLIS_SYMMETRIC
-@blis_interface_linalg_lv3_herk Float32    Float32    Float64    Float64    syrk! syrk! BLIS_SYMMETRIC
 @blis_interface_linalg_lv3_herk ComplexF32 ComplexF32 ComplexF32 ComplexF32 syrk! syrk! BLIS_SYMMETRIC
 @blis_interface_linalg_lv3_herk ComplexF64 ComplexF64 ComplexF64 ComplexF64 syrk! syrk! BLIS_SYMMETRIC
-@blis_interface_linalg_lv3_herk ComplexF32 ComplexF32 ComplexF64 ComplexF64 syrk! syrk! BLIS_SYMMETRIC
-@blis_interface_linalg_lv3_herk Float32    ComplexF32 Float32    ComplexF32 syrk! syrk! BLIS_SYMMETRIC
-@blis_interface_linalg_lv3_herk Float64    ComplexF64 Float64    ComplexF64 syrk! syrk! BLIS_SYMMETRIC
 
 macro blis_interface_linalg_lv3_trmm(Tc1, T1, T2, targetfunc, bliname)
 
@@ -307,10 +309,8 @@ macro blis_interface_linalg_lv3_trmm(Tc1, T1, T2, targetfunc, bliname)
                            tA::AbstractChar,
                            dA::AbstractChar,
                            α::$Tc1,
-                           A::StridedMatrix{$T1},
-                           B::StridedMatrix{$T2}) where {T1<:BliCompatibleType,
-                                                        T2<:BliCompatibleType,
-                                                        Tc1<:BliCompatibleType} = begin
+                           A::StridedMatrix{<:$T1},
+                           B::StridedMatrix{<:$T2}) = begin
 
             bli_si = char_to_side[si]
             bli_ul = char_to_uplo[ul]
@@ -343,21 +343,21 @@ macro blis_interface_linalg_lv3_trmm(Tc1, T1, T2, targetfunc, bliname)
     end
 end
 
+@blis_interface_linalg_lv3_trmm(BliCompatibleType,
+                                BliCompatibleType,
+                                BliCompatibleType,
+                                trmm!, trmm!)
 @blis_interface_linalg_lv3_trmm Float32    Float32    Float32    trmm! trmm!
 @blis_interface_linalg_lv3_trmm Float64    Float64    Float64    trmm! trmm!
-@blis_interface_linalg_lv3_trmm Float32    Float32    Float64    trmm! trmm!
 @blis_interface_linalg_lv3_trmm ComplexF32 ComplexF32 ComplexF32 trmm! trmm!
 @blis_interface_linalg_lv3_trmm ComplexF64 ComplexF64 ComplexF64 trmm! trmm!
-@blis_interface_linalg_lv3_trmm ComplexF32 ComplexF32 ComplexF64 trmm! trmm!
-@blis_interface_linalg_lv3_trmm Float32    ComplexF32 ComplexF32 trmm! trmm!
-@blis_interface_linalg_lv3_trmm Float64    ComplexF64 ComplexF64 trmm! trmm!
 
+@blis_interface_linalg_lv3_trmm(BliCompatibleType,
+                                BliCompatibleType,
+                                BliCompatibleType,
+                                trsm!, trsm!)
 @blis_interface_linalg_lv3_trmm Float32    Float32    Float32    trsm! trsm!
 @blis_interface_linalg_lv3_trmm Float64    Float64    Float64    trsm! trsm!
-@blis_interface_linalg_lv3_trmm Float32    Float32    Float64    trsm! trsm!
 @blis_interface_linalg_lv3_trmm ComplexF32 ComplexF32 ComplexF32 trsm! trsm!
 @blis_interface_linalg_lv3_trmm ComplexF64 ComplexF64 ComplexF64 trsm! trsm!
-@blis_interface_linalg_lv3_trmm ComplexF32 ComplexF32 ComplexF64 trsm! trsm!
-@blis_interface_linalg_lv3_trmm Float32    ComplexF32 ComplexF32 trsm! trsm!
-@blis_interface_linalg_lv3_trmm Float64    ComplexF64 ComplexF64 trsm! trsm!
 
