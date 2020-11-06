@@ -22,6 +22,32 @@ bli_check_lv3(transa::BliTrans,
     nothing
 end
 
+# Julia has a specific `gemm_wrapper!` for spetial GEMM calls.
+# In case of BLIS these separations are not needed so this function
+#   calls directly `gemm!`.
+macro blis_interface_linalg_lv3_gemm_wrapper(T1, T2, T3)
+
+    wrapperfunc = :( gemm_wrapper! )
+
+    return quote
+
+        $(esc(wrapperfunc))(C::StridedVecOrMat{$T1},
+                            tA::AbstractChar,
+                            tB::AbstractChar,
+                            A::StridedVecOrMat{$T2},
+                            B::StridedVecOrMat{$T3},
+                            _coeffs = LinearAlgebra.MulAddMul()) = begin
+
+            α = 1.0 * _coeffs.alpha
+            β = 1.0 * _coeffs.beta
+
+            # TODO: 2 small cases.
+            gemm!(tA, tB, α, A, B, β, C)
+
+        end
+    end
+end
+
 macro blis_interface_linalg_lv3_gemm(Tc1, T1, T2, Tc2, T3, targetfunc, bliname)
 
     # Get method for the object API backend.
