@@ -20,7 +20,7 @@ Comparison of BLIS against other popular BLAS vendors is available in [this sect
 
 - OS: macOS 10.15.7
 - Processor: Intel(R) Core(R) i5 8259U
-- FP Pipeline: 2 AVX2 pipelines
+- FP Pipeline: AVX2 pipelines
 - OpenMP Thread Used: 4
 
 ![](../bmk/dgemm_ggc_haswell_i5_8259u.png)
