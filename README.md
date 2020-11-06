@@ -7,7 +7,12 @@ This repository to provides:
 - As BLIS itself is using actively templates and macros, 
   this package also aims to maximize usage of Julia's
   metaprogramming features.
-  
+
+## Performance
+
+![](./bmk/dgemm_ggc_skx_xeon_8260.png)
+
+Above is a benchmark result obtained against generic-strided matrix multiplications. More performance results are available [here](doc/Performance.md).
 
 ## Installation
 ```
