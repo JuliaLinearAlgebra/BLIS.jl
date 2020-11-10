@@ -170,14 +170,14 @@ bli_obj_scalar_init_detached!(dt::BliNum,
                                                         Ptr{BliObjBase}),
                                                        dt, Ref(obj))
 
-bli_setsc!(zeta_r::Float64,
-           zeta_i::Float64,
+bli_setsc!(zeta_r::Real,
+           zeta_i::Real,
            obj::BliObjBase) = ccall(dlsym(libblis, :bli_setsc),
                                     Nothing,
                                     (Float64,
                                      Float64,
                                      Ptr{BliObjBase}),
-                                    zeta_r, zeta_i, Ref(obj))
+                                    Float64(zeta_r), Float64(zeta_i), Ref(obj))
 
 #----------------------------------------------------------------
 # These methods replicates BLIS' C marcos for setting obj_t.info.
