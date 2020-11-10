@@ -3,7 +3,9 @@ BLIS.jl
 
 This repository to provides:
 
-- Wrapper for typed interface of [BLIS](https://github.com/flame/blis).
+- Wrapper for typed and object-based interface of [BLIS](https://github.com/flame/blis).
+- Overwrite of `LinearAlgebra.BLAS` functions so that matrix
+  multiplications can also be redirected to the BLIS backend.
 - As BLIS itself is using actively templates and macros, 
   this package also aims to maximize usage of Julia's
   metaprogramming features.
@@ -107,7 +109,7 @@ C
 
 ## Roadmaps
 
-- Provide option to set BLIS as BLAS provider.
+- Provide option to compile BLIS into Julia startup image.
 - Incorporate [HPAC/Linnea](https://github.com/HPAC/linnea) in this
   or another repository.
 - Introduce BLIS' testsuite and fallback to `LinearAlgebra.BLAS` for
