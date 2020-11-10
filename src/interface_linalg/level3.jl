@@ -91,6 +91,7 @@ macro blis_interface_linalg_lv3_gemm(Tc1, T1, T2, Tc2, T3, targetfunc, bliname)
     end
 end
 
+if "gemm" ∉ blacklist
 @blis_interface_linalg_lv3_gemm(BliCompatibleType,
                                 BliCompatibleType,
                                 BliCompatibleType,
@@ -110,6 +111,7 @@ end
 @blis_interface_linalg_lv3_gemm_wrapper Float64    Float64    Float64
 @blis_interface_linalg_lv3_gemm_wrapper ComplexF32 ComplexF32 ComplexF32
 @blis_interface_linalg_lv3_gemm_wrapper ComplexF64 ComplexF64 ComplexF64
+end
 
 macro blis_interface_linalg_lv3_hemm(Tc1, T1, T2, Tc2, T3, targetfunc, bliname, bli_struc)
 
@@ -161,6 +163,7 @@ macro blis_interface_linalg_lv3_hemm(Tc1, T1, T2, Tc2, T3, targetfunc, bliname, 
     end
 end
 
+if "hemm" ∉ blacklist
 @blis_interface_linalg_lv3_hemm(BliCompatibleType,
                                 BliCompatibleType,
                                 BliCompatibleType,
@@ -172,7 +175,9 @@ end
 @blis_interface_linalg_lv3_hemm Float64    Float64    Float64    Float64    Float64    hemm! hemm! BLIS_HERMITIAN
 @blis_interface_linalg_lv3_hemm ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 hemm! hemm! BLIS_HERMITIAN
 @blis_interface_linalg_lv3_hemm ComplexF64 ComplexF64 ComplexF64 ComplexF64 ComplexF64 hemm! hemm! BLIS_HERMITIAN
+end
 
+if "symm" ∉ blacklist
 @blis_interface_linalg_lv3_hemm(BliCompatibleType,
                                 BliCompatibleType,
                                 BliCompatibleType,
@@ -184,6 +189,7 @@ end
 @blis_interface_linalg_lv3_hemm Float64    Float64    Float64    Float64    Float64    symm! symm! BLIS_SYMMETRIC
 @blis_interface_linalg_lv3_hemm ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 symm! symm! BLIS_SYMMETRIC
 @blis_interface_linalg_lv3_hemm ComplexF64 ComplexF64 ComplexF64 ComplexF64 ComplexF64 symm! symm! BLIS_SYMMETRIC
+end
 
 macro blis_interface_linalg_lv3_her2k(Tc1, T1, T2, Tc2, T3, targetfunc, bliname, bli_struc)
 
@@ -230,6 +236,7 @@ macro blis_interface_linalg_lv3_her2k(Tc1, T1, T2, Tc2, T3, targetfunc, bliname,
     end
 end
 
+if "her2k" ∉ blacklist
 @blis_interface_linalg_lv3_her2k(BliCompatibleType,
                                  BliCompatibleType,
                                  BliCompatibleType,
@@ -241,7 +248,9 @@ end
 @blis_interface_linalg_lv3_her2k Float64    Float64    Float64    Float64 Float64    her2k! her2k! BLIS_HERMITIAN
 @blis_interface_linalg_lv3_her2k ComplexF32 ComplexF32 ComplexF32 Float32 ComplexF32 her2k! her2k! BLIS_HERMITIAN
 @blis_interface_linalg_lv3_her2k ComplexF64 ComplexF64 ComplexF64 Float64 ComplexF64 her2k! her2k! BLIS_HERMITIAN
+end
 
+if "syr2k" ∉ blacklist
 @blis_interface_linalg_lv3_her2k(BliCompatibleType,
                                  BliCompatibleType,
                                  BliCompatibleType,
@@ -253,6 +262,7 @@ end
 @blis_interface_linalg_lv3_her2k Float64    Float64    Float64    Float64    Float64    syr2k! syr2k! BLIS_SYMMETRIC
 @blis_interface_linalg_lv3_her2k ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 syr2k! syr2k! BLIS_SYMMETRIC
 @blis_interface_linalg_lv3_her2k ComplexF64 ComplexF64 ComplexF64 ComplexF64 ComplexF64 syr2k! syr2k! BLIS_SYMMETRIC
+end
 
 macro blis_interface_linalg_lv3_herk(Tc1, T1, Tc2, T2, targetfunc, bliname, bli_struc)
 
@@ -296,6 +306,7 @@ macro blis_interface_linalg_lv3_herk(Tc1, T1, Tc2, T2, targetfunc, bliname, bli_
     end
 end
 
+if "herk" ∉ blacklist
 @blis_interface_linalg_lv3_herk(BliCompatibleType,
                                 BliCompatibleType,
                                 BliCompatibleType,
@@ -306,7 +317,9 @@ end
 @blis_interface_linalg_lv3_herk Float64 Float64    Float64 Float64    herk! herk! BLIS_HERMITIAN
 @blis_interface_linalg_lv3_herk Float32 ComplexF32 Float32 ComplexF32 herk! herk! BLIS_HERMITIAN
 @blis_interface_linalg_lv3_herk Float64 ComplexF64 Float64 ComplexF64 herk! herk! BLIS_HERMITIAN
+end
 
+if "syrk" ∉ blacklist
 @blis_interface_linalg_lv3_herk(BliCompatibleType,
                                 BliCompatibleType,
                                 BliCompatibleType,
@@ -317,6 +330,7 @@ end
 @blis_interface_linalg_lv3_herk Float64    Float64    Float64    Float64    syrk! syrk! BLIS_SYMMETRIC
 @blis_interface_linalg_lv3_herk ComplexF32 ComplexF32 ComplexF32 ComplexF32 syrk! syrk! BLIS_SYMMETRIC
 @blis_interface_linalg_lv3_herk ComplexF64 ComplexF64 ComplexF64 ComplexF64 syrk! syrk! BLIS_SYMMETRIC
+end
 
 macro blis_interface_linalg_lv3_trmm(Tc1, T1, T2, targetfunc, bliname)
 
@@ -369,6 +383,7 @@ macro blis_interface_linalg_lv3_trmm(Tc1, T1, T2, targetfunc, bliname)
     end
 end
 
+if "trmm" ∉ blacklist
 @blis_interface_linalg_lv3_trmm(BliCompatibleType,
                                 BliCompatibleType,
                                 BliCompatibleType,
@@ -377,7 +392,9 @@ end
 @blis_interface_linalg_lv3_trmm Float64    Float64    Float64    trmm! trmm!
 @blis_interface_linalg_lv3_trmm ComplexF32 ComplexF32 ComplexF32 trmm! trmm!
 @blis_interface_linalg_lv3_trmm ComplexF64 ComplexF64 ComplexF64 trmm! trmm!
+end
 
+if "trsm" ∉ blacklist
 @blis_interface_linalg_lv3_trmm(BliCompatibleType,
                                 BliCompatibleType,
                                 BliCompatibleType,
@@ -386,4 +403,5 @@ end
 @blis_interface_linalg_lv3_trmm Float64    Float64    Float64    trsm! trsm!
 @blis_interface_linalg_lv3_trmm ComplexF32 ComplexF32 ComplexF32 trsm! trsm!
 @blis_interface_linalg_lv3_trmm ComplexF64 ComplexF64 ComplexF64 trsm! trsm!
+end
 

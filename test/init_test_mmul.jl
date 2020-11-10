@@ -11,6 +11,13 @@ using LinearAlgebra: BLAS
 using Statistics
 Random.seed!(1234)
 rtype(::Type{Complex{T}}) where {T} = T
+zrtest(val, atol, label) = begin
+    iszr = ≈(val, 0.0, atol=atol)
+    if !iszr
+        @info "`$label` test failed. Consider adding it to ~/.blis_jlbla_blacklist."
+    end
+    return iszr
+end
 
 @testset "BLAS level-3 LinearAlgebra interface" begin
 αr = 1.1
@@ -134,10 +141,11 @@ for (i, T)=zip(1:4, [Float32, Float64, ComplexF32, ComplexF64])
     Cst_sm_symm[i] .= Symmetric(Array(Ast_sm)) * Array(Bst_sm)
 end
 
-using Pkg
-Pkg.activate(".")
 # Import BLIS for testing.
 using BLIS
+if length(BLIS.BLASInterface.blacklist) > 0
+    @info "Blacklisted methods: $(BLIS.BLASInterface.blacklist)."
+end
 
 for (i, T)=zip(1:4, [Float32, Float64, ComplexF32, ComplexF64])
     Alarge = zeros(T, χlarge, χlarge)
@@ -216,28 +224,28 @@ for (i, T)=zip(1:4, [Float32, Float64, ComplexF32, ComplexF64])
     Cst_sm_symm_cur = Symmetric(Ast_sm) * Bst_sm
 
     # Check.
-    @test mean(abs.(Clarge_gemm_cur  - Clarge_gemm[i] )) ≈ 0 atol=1e-6*χlarge^1.2
-    @test mean(abs.(Clarge_hemm_cur  - Clarge_hemm[i] )) ≈ 0 atol=1e-6*χlarge^1.2
-    @test mean(abs.(Clarge_symm_cur  - Clarge_symm[i] )) ≈ 0 atol=1e-6*χlarge^1.2
-    @test mean(abs.(Clarge_her2k_cur - Clarge_her2k[i])) ≈ 0 atol=1e-6*χlarge^1.2
-    @test mean(abs.(Clarge_syr2k_cur - Clarge_syr2k[i])) ≈ 0 atol=1e-6*χlarge^1.2
-    @test mean(abs.(Clarge_herk_cur  - Clarge_herk[i] )) ≈ 0 atol=1e-6*χlarge^1.2
-    @test mean(abs.(Clarge_syrk_cur  - Clarge_syrk[i] )) ≈ 0 atol=1e-6*χlarge^1.2
-    @test mean(abs.(Csmall_gemm_cur  - Csmall_gemm[i] )) ≈ 0 atol=1e-6*χsmall^1.2
-    @test mean(abs.(Csmall_hemm_cur  - Csmall_hemm[i] )) ≈ 0 atol=1e-6*χsmall^1.2
-    @test mean(abs.(Csmall_symm_cur  - Csmall_symm[i] )) ≈ 0 atol=1e-6*χsmall^1.2
-    @test mean(abs.(Csmall_her2k_cur - Csmall_her2k[i])) ≈ 0 atol=1e-6*χsmall^1.2
-    @test mean(abs.(Csmall_syr2k_cur - Csmall_syr2k[i])) ≈ 0 atol=1e-6*χsmall^1.2
-    @test mean(abs.(Csmall_herk_cur  - Csmall_herk[i] )) ≈ 0 atol=1e-6*χsmall^1.2
-    @test mean(abs.(Csmall_syrk_cur  - Csmall_syrk[i] )) ≈ 0 atol=1e-6*χsmall^1.2
+    @test zrtest(mean(abs.(Clarge_gemm_cur  - Clarge_gemm[i] )), 1e-6*χlarge^1.2, "gemm")
+    @test zrtest(mean(abs.(Clarge_hemm_cur  - Clarge_hemm[i] )), 1e-6*χlarge^1.2, "hemm")
+    @test zrtest(mean(abs.(Clarge_symm_cur  - Clarge_symm[i] )), 1e-6*χlarge^1.2, "symm")
+    @test zrtest(mean(abs.(Clarge_her2k_cur - Clarge_her2k[i])), 1e-6*χlarge^1.2, "her2k")
+    @test zrtest(mean(abs.(Clarge_syr2k_cur - Clarge_syr2k[i])), 1e-6*χlarge^1.2, "syr2k")
+    @test zrtest(mean(abs.(Clarge_herk_cur  - Clarge_herk[i] )), 1e-6*χlarge^1.2, "herk")
+    @test zrtest(mean(abs.(Clarge_syrk_cur  - Clarge_syrk[i] )), 1e-6*χlarge^1.2, "syrk")
+    @test zrtest(mean(abs.(Csmall_gemm_cur  - Csmall_gemm[i] )), 1e-6*χsmall^1.2, "gemm")
+    @test zrtest(mean(abs.(Csmall_hemm_cur  - Csmall_hemm[i] )), 1e-6*χsmall^1.2, "hemm")
+    @test zrtest(mean(abs.(Csmall_symm_cur  - Csmall_symm[i] )), 1e-6*χsmall^1.2, "symm")
+    @test zrtest(mean(abs.(Csmall_her2k_cur - Csmall_her2k[i])), 1e-6*χsmall^1.2, "her2k")
+    @test zrtest(mean(abs.(Csmall_syr2k_cur - Csmall_syr2k[i])), 1e-6*χsmall^1.2, "syr2k")
+    @test zrtest(mean(abs.(Csmall_herk_cur  - Csmall_herk[i] )), 1e-6*χsmall^1.2, "herk")
+    @test zrtest(mean(abs.(Csmall_syrk_cur  - Csmall_syrk[i] )), 1e-6*χsmall^1.2, "syrk")
 
     # Check - strided.
-    @test mean(abs.(Cst_lg_gemm_cur - Cst_lg_gemm[i])) ≈ 0 atol=1e-6*χlarge^1.2
-    @test mean(abs.(Cst_sm_gemm_cur - Cst_sm_gemm[i])) ≈ 0 atol=1e-6*χsmall^1.2
-    @test mean(abs.(Cst_lg_hemm_cur - Cst_lg_hemm[i])) ≈ 0 atol=1e-6*χlarge^1.2
-    @test mean(abs.(Cst_sm_hemm_cur - Cst_sm_hemm[i])) ≈ 0 atol=1e-6*χsmall^1.2
-    @test mean(abs.(Cst_lg_symm_cur - Cst_lg_symm[i])) ≈ 0 atol=1e-6*χlarge^1.2
-    @test mean(abs.(Cst_sm_symm_cur - Cst_sm_symm[i])) ≈ 0 atol=1e-6*χsmall^1.2
+    @test zrtest(mean(abs.(Cst_lg_gemm_cur - Cst_lg_gemm[i])), 1e-6*χlarge^1.2, "gemm")
+    @test zrtest(mean(abs.(Cst_sm_gemm_cur - Cst_sm_gemm[i])), 1e-6*χsmall^1.2, "gemm")
+    @test zrtest(mean(abs.(Cst_lg_hemm_cur - Cst_lg_hemm[i])), 1e-6*χlarge^1.2, "hemm")
+    @test zrtest(mean(abs.(Cst_sm_hemm_cur - Cst_sm_hemm[i])), 1e-6*χsmall^1.2, "hemm")
+    @test zrtest(mean(abs.(Cst_lg_symm_cur - Cst_lg_symm[i])), 1e-6*χlarge^1.2, "symm")
+    @test zrtest(mean(abs.(Cst_sm_symm_cur - Cst_sm_symm[i])), 1e-6*χsmall^1.2, "symm")
 end
 end
 

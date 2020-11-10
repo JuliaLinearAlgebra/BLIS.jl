@@ -88,6 +88,12 @@ using ..Types: char_to_trans, char_to_conj, char_to_side, char_to_uplo, char_to_
 using ..Types: BliTrans, BliConj, BliUpLo, BliSide, BliDiag, BliInvDiag, BliStruc
 using ..Types: BliCompatibleType
 using ..Types: BLIS_TRANS_BIT
+using DelimitedFiles
+# Load blacklist.
+blacklist = []
+if isfile(string(ENV["HOME"], "/.blis_jlbla_blacklist"))
+    blacklist = readdlm(string(ENV["HOME"], "/.blis_jlbla_blacklist"))
+end
 include("interface_linalg/level3.jl")
 include("interface_linalg/level2.jl")
 include("interface_linalg/level1.jl")
