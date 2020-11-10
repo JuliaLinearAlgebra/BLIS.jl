@@ -12,7 +12,7 @@ This repository to provides:
 
 ## Performance
 
-![](./bmk/dgemm_ggc_skx_xeon_8260.png)
+<img src="./bmk/dgemm_ggc_skx_xeon_8260.png" width="400" />
 
 Above is a benchmark result obtained against generic-strided matrix multiplications. More performance results are available [here](doc/Performance.md).
 
@@ -52,6 +52,29 @@ BLIS.BLASInterface.gemm!('N', 'N', 1.0+0im, wA, wB, 1.0+0im, wC)
 Mixed precision is also directly supported by this interface.
 
 As BLAS interface defined by Julia's `LinearAlgebra.BLAS` is a few routines beyond standard BLAS, [here is a list for status of support](src/interface_linalg/ABOUT.md).
+
+#### Testing LinearAlgebra Frontend
+
+As the `LinearAlgebra` frontend overwrites Julia's Base methods, it's recommended to run tests before using. Currently level-3 tests are implemented within the package and can be invoked by:
+
+```
+]test BLIS
+```
+
+The testsuite is method-resolved and comes with a failure workaround. If failure occurs with a message like:
+
+```
+[ Info: `gemm` test failed. Consider adding it to ~/.blis_jlbla_blacklist.
+BLAS level-3 LinearAlgebra interface: Test Failed at ...
+```
+
+One can make the following blacklist to block the very failing method and use the rest:
+
+```bash
+echo "gemm" > ~/.blis_jlbla_blacklist
+# Trigger JIT reload.
+touch $(find ~/.julia/packages/ -name "BLIS.jl" | tail -n 1)
+```
 
 ### BLIS Typed Backend
 
