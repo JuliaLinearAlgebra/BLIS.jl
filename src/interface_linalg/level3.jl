@@ -206,7 +206,7 @@ macro blis_interface_linalg_lv3_her2k(Tc1, T1, T2, Tc2, T3, targetfunc, bliname,
                            C::StridedMatrix{<:$T3}) = begin
 
             bli_ul = char_to_uplo[ul]
-            bli_tAB = char_to_side[tAB]
+            bli_tAB = char_to_trans[tAB]
 
             bli_check_lv3(bli_tAB, bli_tAB, BLIS_NO_TRANSPOSE,
                           size(A)...,
@@ -220,7 +220,7 @@ macro blis_interface_linalg_lv3_her2k(Tc1, T1, T2, Tc2, T3, targetfunc, bliname,
             oC = BliObj(C)
 
             ObjectBackend.bli_obj_set_uplo!(bli_ul, oC.obj)
-            ObjectBackend.bli_obj_set_struc!($bli_struc, oA.obj)
+            ObjectBackend.bli_obj_set_struc!($bli_struc, oC.obj)
             ObjectBackend.bli_obj_set_onlytrans!(bli_tAB, oA.obj)
             ObjectBackend.bli_obj_set_onlytrans!(bli_tAB, oB.obj)
             $blifunc(oα, oA, oB, oβ, oC)
@@ -237,10 +237,10 @@ end
                                  BliCompatibleType,
                                  her2k!, her2k!,
                                  BLIS_HERMITIAN)
-@blis_interface_linalg_lv3_her2k Float32    Float32    Float32    Float32    Float32    her2k! her2k! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_her2k Float64    Float64    Float64    Float64    Float64    her2k! her2k! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_her2k ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 her2k! her2k! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_her2k ComplexF64 ComplexF64 ComplexF64 ComplexF64 ComplexF64 her2k! her2k! BLIS_HERMITIAN
+@blis_interface_linalg_lv3_her2k Float32    Float32    Float32    Float32 Float32    her2k! her2k! BLIS_HERMITIAN
+@blis_interface_linalg_lv3_her2k Float64    Float64    Float64    Float64 Float64    her2k! her2k! BLIS_HERMITIAN
+@blis_interface_linalg_lv3_her2k ComplexF32 ComplexF32 ComplexF32 Float32 ComplexF32 her2k! her2k! BLIS_HERMITIAN
+@blis_interface_linalg_lv3_her2k ComplexF64 ComplexF64 ComplexF64 Float64 ComplexF64 her2k! her2k! BLIS_HERMITIAN
 
 @blis_interface_linalg_lv3_her2k(BliCompatibleType,
                                  BliCompatibleType,
@@ -274,7 +274,7 @@ macro blis_interface_linalg_lv3_herk(Tc1, T1, Tc2, T2, targetfunc, bliname, bli_
                            C::StridedMatrix{<:$T2}) = begin
 
             bli_ul = char_to_uplo[ul]
-            bli_tA = char_to_side[tA]
+            bli_tA = char_to_trans[tA]
 
             bli_check_lv3(bli_tA, bli_tA, BLIS_NO_TRANSPOSE,
                           size(A)...,
@@ -287,7 +287,7 @@ macro blis_interface_linalg_lv3_herk(Tc1, T1, Tc2, T2, targetfunc, bliname, bli_
             oC = BliObj(C)
 
             ObjectBackend.bli_obj_set_uplo!(bli_ul, oC.obj)
-            ObjectBackend.bli_obj_set_struc!($bli_struc, oA.obj)
+            ObjectBackend.bli_obj_set_struc!($bli_struc, oC.obj)
             ObjectBackend.bli_obj_set_onlytrans!(bli_tA, oA.obj)
             $blifunc(oα, oA, oβ, oC)
             C
@@ -302,10 +302,10 @@ end
                                 BliCompatibleType,
                                 herk!, herk!,
                                 BLIS_HERMITIAN)
-@blis_interface_linalg_lv3_herk Float32    Float32    Float32    Float32    herk! herk! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_herk Float64    Float64    Float64    Float64    herk! herk! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_herk ComplexF32 ComplexF32 ComplexF32 ComplexF32 herk! herk! BLIS_HERMITIAN
-@blis_interface_linalg_lv3_herk ComplexF64 ComplexF64 ComplexF64 ComplexF64 herk! herk! BLIS_HERMITIAN
+@blis_interface_linalg_lv3_herk Float32 Float32    Float32 Float32    herk! herk! BLIS_HERMITIAN
+@blis_interface_linalg_lv3_herk Float64 Float64    Float64 Float64    herk! herk! BLIS_HERMITIAN
+@blis_interface_linalg_lv3_herk Float32 ComplexF32 Float32 ComplexF32 herk! herk! BLIS_HERMITIAN
+@blis_interface_linalg_lv3_herk Float64 ComplexF64 Float64 ComplexF64 herk! herk! BLIS_HERMITIAN
 
 @blis_interface_linalg_lv3_herk(BliCompatibleType,
                                 BliCompatibleType,
