@@ -14,7 +14,7 @@ This repository to provides:
 
 <img src="./bmk/dgemm_ggc_skx_xeon_8260.png" width="500" />
 
-Above is a benchmark result obtained against generic-strided matrix multiplications. More performance results are available [here](doc/Performance.md).
+Above is a benchmark result obtained against generic-strided matrix multiplications. More performance results are available [here](docs/src/performance.md).
 
 ## Installation
 ```
