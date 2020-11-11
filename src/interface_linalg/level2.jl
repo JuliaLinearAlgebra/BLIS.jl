@@ -3,7 +3,7 @@
 # TODO: support gbmv!, sbmv! and hbmv!.
 #       hpmv! and spmv! is not possible within current frame.
 
-" Level2 BLAS size checker. "
+# Level2 BLAS size checker.
 bli_check_lv2(trans::BliTrans,
               m ::Integer, n ::Integer,
               n_::Integer, m_::Integer) = begin

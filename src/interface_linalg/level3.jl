@@ -1,7 +1,7 @@
 # Level-3 LinearAlgebra.BLAS interface.
 #
 
-" Level3 BLAS size checker. "
+# Level3 BLAS size checker.
 bli_check_lv3(transa::BliTrans,
               transb::BliTrans,
               transc::BliTrans,
