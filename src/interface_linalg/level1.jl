@@ -56,9 +56,9 @@ macro blis_interface_linalg_lv1_copy(T1, targetfunc, bliname)
 end
 
 @doc """
-        copy!(n, x, incx, y, incy)
+        blascopy!(n, x, incx, y, incy)
     BLIS-based COPY. This is the same as BLAS' `?copy`.
-    """ copy!
+    """ blascopy!
 @blis_interface_linalg_lv1_copy Float32    blascopy! copyv!
 @blis_interface_linalg_lv1_copy Float64    blascopy! copyv!
 @blis_interface_linalg_lv1_copy ComplexF32 blascopy! copyv!
