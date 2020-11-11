@@ -23,10 +23,6 @@ macro blis_interface_linalg_lv2_gemv(Tc1, T1, T2, Tc2, T3, targetfunc, bliname)
 
     return quote
 
-        """
-            gemv!(tA, α, A, x, β, y)
-        BLIS-based GEMV with strides support & mixed-precision.
-        """
         $(esc(targetfunc))(tA::AbstractChar,
                            α::$Tc1,
                            A::StridedMatrix{<:$T1},
@@ -55,6 +51,10 @@ macro blis_interface_linalg_lv2_gemv(Tc1, T1, T2, Tc2, T3, targetfunc, bliname)
     end
 end
 
+@doc """
+        gemv!(tA, α, A, x, β, y)
+    BLIS-based GEMV with strides support & mixed-precision.
+    """ gemv!
 @blis_interface_linalg_lv2_gemv(BliCompatibleType,
                                 BliCompatibleType,
                                 BliCompatibleType,
@@ -74,10 +74,6 @@ macro blis_interface_linalg_lv2_hemv(Tc1, T1, T2, Tc2, T3, targetfunc, bliname, 
 
     return quote
 
-        """
-            ??mv!(ul, α, A, x, β, y)
-        BLIS-based HEMV/SYMV with strides support & mixed-precision.
-        """
         $(esc(targetfunc))(ul::AbstractChar,
                            α::$Tc1,
                            A::StridedMatrix{<:$T1},
@@ -107,6 +103,10 @@ macro blis_interface_linalg_lv2_hemv(Tc1, T1, T2, Tc2, T3, targetfunc, bliname, 
     end
 end
 
+@doc """
+        hemv!(ul, α, A, x, β, y)
+    BLIS-based HEMV with strides support & mixed-precision.
+    """ hemv!
 @blis_interface_linalg_lv2_hemv(BliCompatibleType,
                                 BliCompatibleType,
                                 BliCompatibleType,
@@ -119,6 +119,10 @@ end
 @blis_interface_linalg_lv2_hemv ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 hemv! hemv! BLIS_HERMITIAN
 @blis_interface_linalg_lv2_hemv ComplexF64 ComplexF64 ComplexF64 ComplexF64 ComplexF64 hemv! hemv! BLIS_HERMITIAN
 
+@doc """
+        symv!(ul, α, A, x, β, y)
+    BLIS-based SYMV with strides support & mixed-precision.
+    """ symv!
 @blis_interface_linalg_lv2_hemv(BliCompatibleType,
                                 BliCompatibleType,
                                 BliCompatibleType,
@@ -139,10 +143,6 @@ macro blis_interface_linalg_lv2_trmv(T1, T2, targetfunc, bliname)
 
     return quote
 
-        """
-            tr?v!(ul, tA, dA, A, b)
-        BLIS-based TRMV/TRSV with strides support & mixed-precision.
-        """
         $(esc(targetfunc))(ul::AbstractChar,
                            tA::AbstractChar,
                            dA::AbstractChar,
@@ -172,6 +172,10 @@ macro blis_interface_linalg_lv2_trmv(T1, T2, targetfunc, bliname)
     end
 end
 
+@doc """
+        trmv!(ul, tA, dA, A, b)
+    BLIS-based TRMV with strides support & mixed-precision.
+    """
 @blis_interface_linalg_lv2_trmv(BliCompatibleType,
                                 BliCompatibleType,
                                 trmv!, trmv!)
@@ -180,6 +184,10 @@ end
 @blis_interface_linalg_lv2_trmv ComplexF32 ComplexF32 trmv! trmv!
 @blis_interface_linalg_lv2_trmv ComplexF64 ComplexF64 trmv! trmv!
 
+@doc """
+        trsv!(ul, tA, dA, A, b)
+    BLIS-based TRSV with strides support & mixed-precision.
+    """
 @blis_interface_linalg_lv2_trmv(BliCompatibleType,
                                 BliCompatibleType,
                                 trsv!, trsv!)
@@ -196,10 +204,6 @@ macro blis_interface_linalg_lv2_ger(Tc1, T1, T2, T3, targetfunc, bliname)
 
     return quote
 
-        """
-            ger!(α, x, y, A)
-        BLIS-based GER with strides support & mixed-precision.
-        """
         $(esc(targetfunc))(α::$Tc1,
                            x::StridedVector{<:$T1},
                            y::StridedVector{<:$T2},
@@ -222,6 +226,10 @@ macro blis_interface_linalg_lv2_ger(Tc1, T1, T2, T3, targetfunc, bliname)
     end
 end
 
+@doc """
+        ger!(α, x, y, A)
+    BLIS-based GER with strides support & mixed-precision.
+    """ ger!
 @blis_interface_linalg_lv2_ger(BliCompatibleType,
                                BliCompatibleType,
                                BliCompatibleType,
@@ -240,10 +248,6 @@ macro blis_interface_linalg_lv2_her(Tc1, T1, T2, targetfunc, bliname, bli_struc)
 
     return quote
 
-        """
-            ??r!(uplo, α, x, A)
-        BLIS-based HER/SYR with strides support & mixed-precision.
-        """
         $(esc(targetfunc))(ul::AbstractChar,
                            α::$Tc1,
                            x::StridedVector{<:$T1},
@@ -269,16 +273,10 @@ macro blis_interface_linalg_lv2_her(Tc1, T1, T2, targetfunc, bliname, bli_struc)
     end
 end
 
-@blis_interface_linalg_lv2_her(BliCompatibleType,
-                               BliCompatibleType,
-                               BliCompatibleType,
-                               syr!, syr!,
-                               BLIS_SYMMETRIC)
-@blis_interface_linalg_lv2_her Float32    Float32    Float32    syr! syr! BLIS_SYMMETRIC
-@blis_interface_linalg_lv2_her Float64    Float64    Float64    syr! syr! BLIS_SYMMETRIC
-@blis_interface_linalg_lv2_her ComplexF32 ComplexF32 ComplexF32 syr! syr! BLIS_SYMMETRIC
-@blis_interface_linalg_lv2_her ComplexF64 ComplexF64 ComplexF64 syr! syr! BLIS_SYMMETRIC
-
+@doc """
+        her!(uplo, α, x, A)
+    BLIS-based HER with strides support & mixed-precision.
+    """ her!
 @blis_interface_linalg_lv2_her(BliCompatibleType,
                                BliCompatibleType,
                                BliCompatibleType,
@@ -288,4 +286,18 @@ end
 @blis_interface_linalg_lv2_her Float64    Float64    Float64    her! her! BLIS_HERMITIAN
 @blis_interface_linalg_lv2_her Float32    ComplexF32 ComplexF32 her! her! BLIS_HERMITIAN
 @blis_interface_linalg_lv2_her Float64    ComplexF64 ComplexF64 her! her! BLIS_HERMITIAN
+
+@doc """
+        syr!(uplo, α, x, A)
+    BLIS-based SYR with strides support & mixed-precision.
+    """ syr!
+@blis_interface_linalg_lv2_her(BliCompatibleType,
+                               BliCompatibleType,
+                               BliCompatibleType,
+                               syr!, syr!,
+                               BLIS_SYMMETRIC)
+@blis_interface_linalg_lv2_her Float32    Float32    Float32    syr! syr! BLIS_SYMMETRIC
+@blis_interface_linalg_lv2_her Float64    Float64    Float64    syr! syr! BLIS_SYMMETRIC
+@blis_interface_linalg_lv2_her ComplexF32 ComplexF32 ComplexF32 syr! syr! BLIS_SYMMETRIC
+@blis_interface_linalg_lv2_her ComplexF64 ComplexF64 ComplexF64 syr! syr! BLIS_SYMMETRIC
 

@@ -56,10 +56,6 @@ macro blis_interface_linalg_lv3_gemm(Tc1, T1, T2, Tc2, T3, targetfunc, bliname)
 
     return quote
 
-        """
-            gemm!(tA, tB, α, A, B, β, C)
-        BLIS-based GEMM with generic strides & mixed precision directly supported.
-        """
         $(esc(targetfunc))(tA::AbstractChar,
                            tB::AbstractChar,
                            α::$Tc1,
@@ -92,6 +88,13 @@ macro blis_interface_linalg_lv3_gemm(Tc1, T1, T2, Tc2, T3, targetfunc, bliname)
 end
 
 if "gemm" ∉ blacklist
+@doc """
+        gemm!(tA, tB, α, A, B, β, C)
+    BLIS-based GEMM with generic strides & mixed precision directly supported:
+    ```math
+    C = β C + α A^{tA} B^{tB}
+    ```
+    """ gemm!
 @blis_interface_linalg_lv3_gemm(BliCompatibleType,
                                 BliCompatibleType,
                                 BliCompatibleType,
@@ -121,10 +124,6 @@ macro blis_interface_linalg_lv3_hemm(Tc1, T1, T2, Tc2, T3, targetfunc, bliname, 
 
     return quote
 
-        """
-            ??mm(side, uplo, α, A, B, β, C)
-        BLIS-based HEMM/SYMM with generic strides & mixed precision directly supported.
-        """
         $(esc(targetfunc))(si::AbstractChar,
                            ul::AbstractChar,
                            α::$Tc1,
@@ -164,6 +163,11 @@ macro blis_interface_linalg_lv3_hemm(Tc1, T1, T2, Tc2, T3, targetfunc, bliname, 
 end
 
 if "hemm" ∉ blacklist
+@doc """
+        hemm!(side, uplo, α, A, B, β, C)
+    BLIS-based HEMM with generic strides & mixed precision directly supported.
+    `A` expresses a `Hermitian` matrix with its `uplo` triangle.
+    """ hemm!
 @blis_interface_linalg_lv3_hemm(BliCompatibleType,
                                 BliCompatibleType,
                                 BliCompatibleType,
@@ -178,6 +182,11 @@ if "hemm" ∉ blacklist
 end
 
 if "symm" ∉ blacklist
+@doc """
+        symm!(side, uplo, α, A, B, β, C)
+    BLIS-based SYMM with generic strides & mixed precision directly supported.
+    `A` expresses a `Symmetric` matrix with its `uplo` triangle.
+    """ symm!
 @blis_interface_linalg_lv3_hemm(BliCompatibleType,
                                 BliCompatibleType,
                                 BliCompatibleType,
@@ -199,10 +208,6 @@ macro blis_interface_linalg_lv3_her2k(Tc1, T1, T2, Tc2, T3, targetfunc, bliname,
 
     return quote
 
-        """
-            ??r2k(uplo, tAB, α, A, B, β, C)
-        BLIS-based HER2K/SYR2K with generic strides & mixed precision directly supported.
-        """
         $(esc(targetfunc))(ul::AbstractChar,
                            tAB::AbstractChar,
                            α::$Tc1,
@@ -237,6 +242,14 @@ macro blis_interface_linalg_lv3_her2k(Tc1, T1, T2, Tc2, T3, targetfunc, bliname,
 end
 
 if "her2k" ∉ blacklist
+@doc """
+        her2k!(uplo, tAB, α, A, B, β, C)
+    BLIS-based HER2K with generic strides & mixed precision directly supported.
+    Performs rank-2k update on `Hermitian` matrix `C` (expressed by `uplo`-triangle):
+    ```math
+    C = β C + (α A B^† + \\bar α B A^†)^{tAB}
+    ```
+    """ her2k!
 @blis_interface_linalg_lv3_her2k(BliCompatibleType,
                                  BliCompatibleType,
                                  BliCompatibleType,
@@ -251,6 +264,14 @@ if "her2k" ∉ blacklist
 end
 
 if "syr2k" ∉ blacklist
+@doc """
+        syr2k!(uplo, tAB, α, A, B, β, C)
+    BLIS-based SYR2K with generic strides & mixed precision directly supported.
+    Performs rank-2k update on `Symmetric` matrix `C` (expressed by `uplo`-triangle):
+    ```math
+    C = β C + (α A B^T + \\bar α B A^T)^{tAB}
+    ```
+    """ syr2k!
 @blis_interface_linalg_lv3_her2k(BliCompatibleType,
                                  BliCompatibleType,
                                  BliCompatibleType,
@@ -272,10 +293,6 @@ macro blis_interface_linalg_lv3_herk(Tc1, T1, Tc2, T2, targetfunc, bliname, bli_
 
     return quote
 
-        """
-            ??rk(uplo, tA, α, A, β, C)
-        BLIS-based HER2K/SYR2K with generic strides & mixed precision directly supported.
-        """
         $(esc(targetfunc))(ul::AbstractChar,
                            tA::AbstractChar,
                            α::$Tc1,
@@ -307,6 +324,11 @@ macro blis_interface_linalg_lv3_herk(Tc1, T1, Tc2, T2, targetfunc, bliname, bli_
 end
 
 if "herk" ∉ blacklist
+@doc """
+        herk!(uplo, tA, α, A, β, C)
+    BLIS-based HERK with generic strides & mixed precision directly supported.
+    Performs rank-k update on `Hermitian` matrix `C` (expressed by `uplo`-triangle).
+    """ herk!
 @blis_interface_linalg_lv3_herk(BliCompatibleType,
                                 BliCompatibleType,
                                 BliCompatibleType,
@@ -320,6 +342,11 @@ if "herk" ∉ blacklist
 end
 
 if "syrk" ∉ blacklist
+@doc """
+        syrk!(uplo, tA, α, A, β, C)
+    BLIS-based SYRK with generic strides & mixed precision directly supported.
+    Performs rank-k update on `Symmetric` matrix `C` (expressed by `uplo`-triangle).
+    """ syrk!
 @blis_interface_linalg_lv3_herk(BliCompatibleType,
                                 BliCompatibleType,
                                 BliCompatibleType,
@@ -340,10 +367,6 @@ macro blis_interface_linalg_lv3_trmm(Tc1, T1, T2, targetfunc, bliname)
 
     return quote
 
-        """
-            tr?m(side, uplo, tA, dA, α, A, B)
-        BLIS-based TRMM/TRSM with generic strides & mixed precision directly supported.
-        """
         $(esc(targetfunc))(si::AbstractChar,
                            ul::AbstractChar,
                            tA::AbstractChar,
@@ -384,6 +407,10 @@ macro blis_interface_linalg_lv3_trmm(Tc1, T1, T2, targetfunc, bliname)
 end
 
 if "trmm" ∉ blacklist
+@doc """
+        trmm!(side, uplo, tA, dA, α, A, B)
+    BLIS-based TRMM with generic strides & mixed precision directly supported.
+    """ trmm!
 @blis_interface_linalg_lv3_trmm(BliCompatibleType,
                                 BliCompatibleType,
                                 BliCompatibleType,
@@ -395,6 +422,10 @@ if "trmm" ∉ blacklist
 end
 
 if "trsm" ∉ blacklist
+@doc """
+        trsm!(side, uplo, tA, dA, α, A, B)
+    BLIS-based TRSM with generic strides & mixed precision directly supported.
+    """ trsm!
 @blis_interface_linalg_lv3_trmm(BliCompatibleType,
                                 BliCompatibleType,
                                 BliCompatibleType,

@@ -11,10 +11,6 @@ macro blis_interface_linalg_lv1_scal(T1, targetfunc, bliname)
 
     return quote
 
-        """
-            scal!(n, α, x, incx)
-        BLIS-based SCAL. This is the same as BLAS' `?scal`.
-        """
         $(esc(targetfunc))(n::Integer,
                            α::$T1,
                            x::Union{Ptr{<:$T1}, Vector{<:$T1}},
@@ -27,6 +23,10 @@ macro blis_interface_linalg_lv1_scal(T1, targetfunc, bliname)
     end
 end
 
+@doc """
+        scal!(n, α, x, incx)
+    BLIS-based SCAL. This is the same as BLAS' `?scal`.
+    """ scal!
 # No generic required here until:
 # - Float128, Float16 and BFloat16 is added to BLIS.
 @blis_interface_linalg_lv1_scal Float32    scal! scalv!
@@ -42,10 +42,6 @@ macro blis_interface_linalg_lv1_copy(T1, targetfunc, bliname)
 
     return quote
 
-        """
-            copy!(n, x, incx, y, incy)
-        BLIS-based COPY. This is the same as BLAS' `?copy`.
-        """
         $(esc(targetfunc))(n::Integer,
                            x::Union{Ptr{<:$T1}, Vector{<:$T1}},
                            incx::Integer,
@@ -59,6 +55,10 @@ macro blis_interface_linalg_lv1_copy(T1, targetfunc, bliname)
     end
 end
 
+@doc """
+        copy!(n, x, incx, y, incy)
+    BLIS-based COPY. This is the same as BLAS' `?copy`.
+    """ copy!
 @blis_interface_linalg_lv1_copy Float32    blascopy! copyv!
 @blis_interface_linalg_lv1_copy Float64    blascopy! copyv!
 @blis_interface_linalg_lv1_copy ComplexF32 blascopy! copyv!
@@ -72,10 +72,6 @@ macro blis_interface_linalg_lv1_axpy(Tc1, T1, T2, targetfunc, bliname)
 
     return quote
 
-        """
-            axpy!(α, x, y)
-        BLIS-based AXPY.
-        """
         $(esc(targetfunc))(α::$Tc1,
                            x::StridedVector{<:$T1},
                            y::StridedVector{<:$T2}) = begin
@@ -93,6 +89,10 @@ macro blis_interface_linalg_lv1_axpy(Tc1, T1, T2, targetfunc, bliname)
     end
 end
 
+@doc """
+        axpy!(α, x, y)
+    BLIS-based AXPY.
+    """ axpy!
 @blis_interface_linalg_lv1_axpy(BliCompatibleType,
                                 BliCompatibleType,
                                 BliCompatibleType,
@@ -110,10 +110,6 @@ macro blis_interface_linalg_lv1_axpby(Tc1, T1, Tc2, T2, targetfunc, bliname)
 
     return quote
 
-        """
-            axpby!(α, x, β, y)
-        BLIS-based AXPBY.
-        """
         $(esc(targetfunc))(α::$Tc1,
                            x::StridedVector{<:$T1},
                            β::$Tc2,
@@ -133,6 +129,10 @@ macro blis_interface_linalg_lv1_axpby(Tc1, T1, Tc2, T2, targetfunc, bliname)
     end
 end
 
+@doc """
+        axpby!(α, x, β, y)
+    BLIS-based AXPBY.
+    """ axpby!
 @blis_interface_linalg_lv1_axpby(BliCompatibleType,
                                  BliCompatibleType,
                                  BliCompatibleType,
