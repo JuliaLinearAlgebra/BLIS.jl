@@ -14,7 +14,7 @@ Comparison of BLIS against other popular BLAS vendors is available in [this sect
 - FP Pipeline: 2 AVX512 pipelines
 - OpenMP Thread Used: 4
 
-![](../../bmk/dgemm_ggc_skx_xeon_8260.png)
+![](bmk/dgemm_ggc_skx_xeon_8260.png)
 
 ## macOS, AVX2
 
@@ -23,5 +23,5 @@ Comparison of BLIS against other popular BLAS vendors is available in [this sect
 - FP Pipeline: AVX2 pipelines
 - OpenMP Thread Used: 4
 
-![](../../bmk/dgemm_ggc_haswell_i5_8259u.png)
+![](bmk/dgemm_ggc_haswell_i5_8259u.png)
 
