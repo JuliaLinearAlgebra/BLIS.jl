@@ -39,5 +39,3 @@ Basically by `using BLIS` one replaces `LinearAlgebra` with BLIS routines as its
 - Provide option to compile BLIS into Julia startup image.
 - Incorporate [HPAC/Linnea](https://github.com/HPAC/linnea) in this
   or another repository.
-- Introduce BLIS' testsuite and fallback to `LinearAlgebra.BLAS` for
-  routines that failed the tests.
