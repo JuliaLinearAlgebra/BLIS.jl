@@ -27,7 +27,7 @@ Above is a benchmark result obtained against generic-strided matrix multiplicati
 
 ## Installation
 ```
-]add https://github.com/xrq-phys/BLIS.jl
+]add BLIS.jl
 ```
 
 ## Usage

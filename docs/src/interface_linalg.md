@@ -31,7 +31,9 @@ Mixed precision is also directly supported by this interface.
 As the `LinearAlgebra` frontend overwrites Julia's Base methods, it's recommended to run tests before using. Currently level-3 tests are implemented within the package and can be invoked by:
 
 ```
-]test BLIS
+using Pkg
+Pkg.test("BLIS")
+# or simply `]test BLIS`
 ```
 
 The testsuite is method-resolved and comes with a failure workaround. If failure occurs with a message like:
