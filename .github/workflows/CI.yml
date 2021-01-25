@@ -9,17 +9,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        arch:
+          - x64
         version:
           - '1.4'
           - '1.5'
           - 'nightly'
         os:
-          # macOS has an upstream problem.
+          - macOS-latest
           - ubuntu-latest
           - windows-latest
-        arch:
-          - x64
-          # TODO: add Aarch64.
+        # NOTE: Waiting for upstream Aarch64 support.
+        # include:
+        #   - arch: aarch64
+        #     version: 'nightly'
+        #     os: macOS-latest
+        #   - arch: aarch64
+        #     version: 'nightly'
+        #     os: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: julia-actions/setup-julia@v1
