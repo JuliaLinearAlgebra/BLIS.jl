@@ -14,6 +14,7 @@ macro blis_object_api_level3_gemm(funcname)
 end
 
 @blis_object_api_level3_gemm gemm
+@blis_object_api_level3_gemm gemmt
 @blis_object_api_level3_gemm her2k
 @blis_object_api_level3_gemm syr2k
 

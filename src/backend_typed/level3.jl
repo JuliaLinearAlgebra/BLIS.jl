@@ -58,6 +58,18 @@ end
                   b,       Ptr{xType}, rsb, BliInc, csb, BliInc,
                   β,       Ptr{xType},
                   c,       Ptr{xType}, rsc, BliInc, csc, BliInc)
+@blis_ccall_group(gemmt,
+                  Cvoid,
+                  uplo,    BliUpLo,
+                  transa,  BliTrans,
+                  transb,  BliTrans,
+                  m,       BliDim,
+                  k,       BliDim,
+                  α,       Ptr{xType},
+                  a,       Ptr{xType}, rsa, BliInc, csa, BliInc,
+                  b,       Ptr{xType}, rsb, BliInc, csb, BliInc,
+                  β,       Ptr{xType},
+                  c,       Ptr{xType}, rsc, BliInc, csc, BliInc)
 @blis_ccall_group(herk,
                   Cvoid,
                   uploc,   BliUpLo,
