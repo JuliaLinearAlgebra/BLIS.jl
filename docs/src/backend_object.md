@@ -122,6 +122,7 @@ BLIS.ObjectBackend.bli_trmv!
 
 ```@docs
 BLIS.ObjectBackend.bli_gemm!
+BLIS.ObjectBackend.bli_gemmt!
 BLIS.ObjectBackend.bli_hemm!
 BLIS.ObjectBackend.bli_symm!
 BLIS.ObjectBackend.bli_her2k!

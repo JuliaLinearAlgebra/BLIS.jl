@@ -253,6 +253,7 @@ BLIS.TypedBackend.bli_ssymm!
 BLIS.TypedBackend.bli_strmm!
 BLIS.TypedBackend.bli_strsm!
 BLIS.TypedBackend.bli_sgemm!
+BLIS.TypedBackend.bli_sgemmt!
 BLIS.TypedBackend.bli_sherk!
 BLIS.TypedBackend.bli_sher2k!
 BLIS.TypedBackend.bli_ssyrk!
@@ -264,6 +265,7 @@ BLIS.TypedBackend.bli_dsymm!
 BLIS.TypedBackend.bli_dtrmm!
 BLIS.TypedBackend.bli_dtrsm!
 BLIS.TypedBackend.bli_dgemm!
+BLIS.TypedBackend.bli_dgemmt!
 BLIS.TypedBackend.bli_dherk!
 BLIS.TypedBackend.bli_dher2k!
 BLIS.TypedBackend.bli_dsyrk!
@@ -275,6 +277,7 @@ BLIS.TypedBackend.bli_csymm!
 BLIS.TypedBackend.bli_ctrmm!
 BLIS.TypedBackend.bli_ctrsm!
 BLIS.TypedBackend.bli_cgemm!
+BLIS.TypedBackend.bli_cgemmt!
 BLIS.TypedBackend.bli_cherk!
 BLIS.TypedBackend.bli_cher2k!
 BLIS.TypedBackend.bli_csyrk!
@@ -286,6 +289,7 @@ BLIS.TypedBackend.bli_zsymm!
 BLIS.TypedBackend.bli_ztrmm!
 BLIS.TypedBackend.bli_ztrsm!
 BLIS.TypedBackend.bli_zgemm!
+BLIS.TypedBackend.bli_zgemmt!
 BLIS.TypedBackend.bli_zherk!
 BLIS.TypedBackend.bli_zher2k!
 BLIS.TypedBackend.bli_zsyrk!
