@@ -3,12 +3,12 @@ BLIS.jl
 
 [![][docs-dev-img]][docs-dev-url] [![CI][github-img]][github-url] [![][codecov-img]][codecov-url]
 
-[docs-dev-url]: https://xrq-phys.github.io/BLIS.jl/dev
+[docs-dev-url]: https://JuliaLinearAlgebra.github.io/BLIS.jl/dev
 [docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
-[github-img]: https://github.com/xrq-phys/BLIS.jl/workflows/CI/badge.svg
-[github-url]: https://github.com/xrq-phys/BLIS.jl/actions?query=workflow%3ACI
-[codecov-img]: https://codecov.io/gh/xrq-phys/BLIS.jl/branch/master/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/xrq-phys/BLIS.jl
+[github-img]: https://github.com/JuliaLinearAlgebra/BLIS.jl/workflows/CI/badge.svg
+[github-url]: https://github.com/JuliaLinearAlgebra/BLIS.jl/actions?query=workflow%3ACI
+[codecov-img]: https://codecov.io/gh/JuliaLinearAlgebra/BLIS.jl/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/JuliaLinearAlgebra/BLIS.jl
 
 This repository provides:
 
