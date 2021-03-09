@@ -16,7 +16,7 @@ makedocs(modules=[BLIS],
         )
 
 deploydocs(
-    repo = "github.com/xrq-phys/BLIS.jl.git",
+    repo = "github.com/JuliaLinearAlgebra/BLIS.jl.git",
     devbranch = "master"
 )
 
