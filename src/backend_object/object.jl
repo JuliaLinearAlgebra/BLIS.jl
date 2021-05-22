@@ -212,7 +212,7 @@ bli_obj_set_uplo!(ul::BliUpLo,
                                                             obj)
 
 bli_obj_set_diag!(d::BliDiag,
-                  obj::BliObjBase) = bli_obj_set_info_bits!(BLIS_DIAG_BIT,
+                  obj::BliObjBase) = bli_obj_set_info_bits!(BLIS_UNIT_DIAG_BIT,
                                                             BliObjBits(d.enum),
                                                             obj)
 

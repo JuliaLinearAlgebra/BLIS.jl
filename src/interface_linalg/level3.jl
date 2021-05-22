@@ -399,6 +399,7 @@ macro blis_interface_linalg_lv3_trmm(Tc1, T1, T2, targetfunc, bliname)
             ObjectBackend.bli_obj_set_uplo!(bli_ul, oA.obj)
             ObjectBackend.bli_obj_set_diag!(bli_dA, oA.obj)
             ObjectBackend.bli_obj_set_onlytrans!(bli_tA, oA.obj)
+            ObjectBackend.bli_obj_set_struc!(BLIS_TRIANGULAR, oA.obj)
             $blifunc(bli_si, oα, oA, oB)
             B
 
