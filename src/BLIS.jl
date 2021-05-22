@@ -2,7 +2,7 @@ module BLIS
 
 using Base
 using Libdl
-using blis_jll: blis
+using blis_jll
 using LinearAlgebra
 
 global libblis = C_NULL
@@ -13,8 +13,10 @@ __init__() = begin
         @info "Using custom defined BLIS installation instead of blis_jll."
         global libblis = dlopen(string(get(ENV, "BLISDIR", ""), "/lib/libblis"))
     else
+        blis_path = blis_jll.blis_path
         # Use BinaryBuilder provided BLIS library.
-        global libblis = dlopen(blis)
+        @info "blis_jll yields BLIS installation: $blis_path."
+        global libblis = dlopen(blis_path)
     end
 end
 
@@ -25,7 +27,6 @@ end
 
 # Typed-API backend.
 module TypedBackend
-import ..blis
 import ..libblis
 using ..Libdl
 using ..Types
@@ -45,7 +46,6 @@ end
 
 # Object-API backend.
 module ObjectBackend
-import ..blis
 import ..libblis
 using ..Libdl
 using ..Base: RefValue, unsafe_convert
