@@ -114,8 +114,8 @@ char_to_trans = Dict( 'N' => BLIS_NO_TRANSPOSE,
                       'n' => BLIS_NO_TRANSPOSE,
                       'T' => BLIS_TRANSPOSE,
                       't' => BLIS_TRANSPOSE,
-                      'C' => BLIS_CONJ_NO_TRANSPOSE,
-                      'c' => BLIS_CONJ_NO_TRANSPOSE )
+                      'C' => BLIS_CONJ_TRANSPOSE,
+                      'c' => BLIS_CONJ_TRANSPOSE )
 
 char_to_conj = Dict( 'N' => BLIS_NO_CONJUGATE,
                      'n' => BLIS_NO_CONJUGATE,
