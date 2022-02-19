@@ -29,6 +29,13 @@ mutable struct BliObjBase
     m_panel::BliDim
     n_panel::BliDim
 
+    # Additional fields from upstream flame/blis#583.
+    # Currently these customizable fields have no Julia interface.
+    pack_fn::Ptr{Nothing}
+    pack_params::Ptr{Nothing}
+    ker_fn::Ptr{Nothing}
+    ker_params::Ptr{Nothing}
+
     # Empty inner-constructor only,
     #  resembling a plain C struct.
     BliObjBase() = begin

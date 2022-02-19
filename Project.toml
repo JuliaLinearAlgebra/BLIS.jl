@@ -14,4 +14,4 @@ blis_jll = "6136c539-28a5-5bf0-87cc-b183200dce32"
 
 [compat]
 julia = "1.4"
-blis_jll = "0.8.0"
+blis_jll = "< 0.8.2"
