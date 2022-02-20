@@ -8,6 +8,7 @@ using Test
 using Random
 using LinearAlgebra
 using LinearAlgebra: BLAS
+using DelimitedFiles
 using Statistics
 Random.seed!(1234)
 rtype(::Type{Complex{T}}) where {T} = T
@@ -43,8 +44,8 @@ global Clarge_her2k= [zeros(T, χlarge, χlarge) for T=(Float32, Float64, Comple
 global Clarge_syr2k= [zeros(T, χlarge, χlarge) for T=(Float32, Float64, ComplexF32, ComplexF64)]
 global Clarge_herk = [zeros(T, χlarge, χlarge) for T=(Float32, Float64, ComplexF32, ComplexF64)]
 global Clarge_syrk = [zeros(T, χlarge, χlarge) for T=(Float32, Float64, ComplexF32, ComplexF64)]
-# global Clarge_trmm = [zeros(T, χlarge, χlarge) for T=(Float32, Float64, ComplexF32, ComplexF64)]
-# global Clarge_trsm = [zeros(T, χlarge, χlarge) for T=(Float32, Float64, ComplexF32, ComplexF64)]
+global Clarge_trmm = [zeros(T, χlarge, χlarge) for T=(Float32, Float64, ComplexF32, ComplexF64)]
+# global Clarge_trsm = [zeros(T, χlarge, χlarge) for T=(Float32, Float64, ComplexF32, ComplexF64)] TRSM is unstable on random A.
 global Csmall_gemm = [zeros(T, χsmall, χsmall) for T=(Float32, Float64, ComplexF32, ComplexF64)]
 global Csmall_hemm = [zeros(T, χsmall, χsmall) for T=(Float32, Float64, ComplexF32, ComplexF64)]
 global Csmall_symm = [zeros(T, χsmall, χsmall) for T=(Float32, Float64, ComplexF32, ComplexF64)]
@@ -52,6 +53,8 @@ global Csmall_her2k= [zeros(T, χsmall, χsmall) for T=(Float32, Float64, Comple
 global Csmall_syr2k= [zeros(T, χsmall, χsmall) for T=(Float32, Float64, ComplexF32, ComplexF64)]
 global Csmall_herk = [zeros(T, χsmall, χsmall) for T=(Float32, Float64, ComplexF32, ComplexF64)]
 global Csmall_syrk = [zeros(T, χsmall, χsmall) for T=(Float32, Float64, ComplexF32, ComplexF64)]
+global Csmall_trmm = [zeros(T, χsmall, χsmall) for T=(Float32, Float64, ComplexF32, ComplexF64)]
+global Csmall_trsm = [zeros(T, χsmall, χsmall) for T=(Float32, Float64, ComplexF32, ComplexF64)]
 
 global Cst_lg_gemm = [zeros(T, χlarge÷2, χlarge÷2) for T=(Float32, Float64, ComplexF32, ComplexF64)]
 global Cst_lg_hemm = [zeros(T, χlarge÷2, χlarge÷2) for T=(Float32, Float64, ComplexF32, ComplexF64)]
@@ -102,6 +105,7 @@ for (i, T)=zip(1:4, [Float32, Float64, ComplexF32, ComplexF64])
     Clarge_syr2k[i] .= elconv.(Clarge_base)
     Clarge_herk[i]  .= elconv.(Clarge_base)
     Clarge_syrk[i]  .= elconv.(Clarge_base)
+    Clarge_trmm[i]  .= elconv.(Clarge_base)
     Csmall_gemm[i]  .= elconv.(Csmall_base)
     Csmall_hemm[i]  .= elconv.(Csmall_base)
     Csmall_symm[i]  .= elconv.(Csmall_base)
@@ -109,6 +113,8 @@ for (i, T)=zip(1:4, [Float32, Float64, ComplexF32, ComplexF64])
     Csmall_syr2k[i] .= elconv.(Csmall_base)
     Csmall_herk[i]  .= elconv.(Csmall_base)
     Csmall_syrk[i]  .= elconv.(Csmall_base)
+    Csmall_trmm[i]  .= elconv.(Csmall_base)
+    Csmall_trsm[i]  .= elconv.(Csmall_base)
 
     # Strided.
     Ast_lg = view(Alarge, 1:2:χlarge, 1:2:χlarge)
@@ -131,6 +137,9 @@ for (i, T)=zip(1:4, [Float32, Float64, ComplexF32, ComplexF64])
     locl_herk!('U', 'N', αR, Asmall, βR, Csmall_herk[i])
     BLAS.syrk!('U', 'N', αu, Alarge, βu, Clarge_syrk[i])
     BLAS.syrk!('U', 'N', αu, Asmall, βu, Csmall_syrk[i])
+    BLAS.trmm!('L', 'U', 'N', 'N', αu, Alarge, Clarge_trmm[i])
+    BLAS.trmm!('L', 'U', 'N', 'N', αu, Asmall, Csmall_trmm[i])
+    BLAS.trsm!('L', 'U', 'N', 'N', αu, Asmall, Csmall_trsm[i])
 
     # Execute: generic-strided.
     Cst_lg_gemm[i] .= Ast_lg * Bst_lg
@@ -185,6 +194,7 @@ for (i, T)=zip(1:4, [Float32, Float64, ComplexF32, ComplexF64])
     Clarge_syr2k_cur = T.(elconv.(Clarge_base))
     Clarge_herk_cur  = T.(elconv.(Clarge_base))
     Clarge_syrk_cur  = T.(elconv.(Clarge_base))
+    Clarge_trmm_cur  = T.(elconv.(Clarge_base))
     Csmall_gemm_cur  = T.(elconv.(Csmall_base))
     Csmall_hemm_cur  = T.(elconv.(Csmall_base))
     Csmall_symm_cur  = T.(elconv.(Csmall_base))
@@ -192,6 +202,8 @@ for (i, T)=zip(1:4, [Float32, Float64, ComplexF32, ComplexF64])
     Csmall_syr2k_cur = T.(elconv.(Csmall_base))
     Csmall_herk_cur  = T.(elconv.(Csmall_base))
     Csmall_syrk_cur  = T.(elconv.(Csmall_base))
+    Csmall_trmm_cur  = T.(elconv.(Csmall_base))
+    Csmall_trsm_cur  = T.(elconv.(Csmall_base))
 
     # Strided.
     Ast_lg = view(Alarge, 1:2:χlarge, 1:2:χlarge)
@@ -214,6 +226,9 @@ for (i, T)=zip(1:4, [Float32, Float64, ComplexF32, ComplexF64])
     locl_herk!('U', 'N', αR, Asmall, βR, Csmall_herk_cur)
     BLAS.syrk!('U', 'N', αu, Alarge, βu, Clarge_syrk_cur)
     BLAS.syrk!('U', 'N', αu, Asmall, βu, Csmall_syrk_cur)
+    BLAS.trmm!('L', 'U', 'N', 'N', αu, Alarge, Clarge_trmm_cur)
+    BLAS.trmm!('L', 'U', 'N', 'N', αu, Asmall, Csmall_trmm_cur)
+    BLAS.trsm!('L', 'U', 'N', 'N', αu, Asmall, Csmall_trsm_cur)
 
     # Execute: generic-strided.
     Cst_lg_gemm_cur = Ast_lg * Bst_lg
@@ -224,28 +239,31 @@ for (i, T)=zip(1:4, [Float32, Float64, ComplexF32, ComplexF64])
     Cst_sm_symm_cur = Symmetric(Ast_sm) * Bst_sm
 
     # Check.
-    @test zrtest(mean(abs.(Clarge_gemm_cur  - Clarge_gemm[i] )), 1e-6*χlarge^1.2, "gemm")
-    @test zrtest(mean(abs.(Clarge_hemm_cur  - Clarge_hemm[i] )), 1e-6*χlarge^1.2, "hemm")
-    @test zrtest(mean(abs.(Clarge_symm_cur  - Clarge_symm[i] )), 1e-6*χlarge^1.2, "symm")
-    @test zrtest(mean(abs.(Clarge_her2k_cur - Clarge_her2k[i])), 1e-6*χlarge^1.2, "her2k")
-    @test zrtest(mean(abs.(Clarge_syr2k_cur - Clarge_syr2k[i])), 1e-6*χlarge^1.2, "syr2k")
-    @test zrtest(mean(abs.(Clarge_herk_cur  - Clarge_herk[i] )), 1e-6*χlarge^1.2, "herk")
-    @test zrtest(mean(abs.(Clarge_syrk_cur  - Clarge_syrk[i] )), 1e-6*χlarge^1.2, "syrk")
-    @test zrtest(mean(abs.(Csmall_gemm_cur  - Csmall_gemm[i] )), 1e-6*χsmall^1.2, "gemm")
-    @test zrtest(mean(abs.(Csmall_hemm_cur  - Csmall_hemm[i] )), 1e-6*χsmall^1.2, "hemm")
-    @test zrtest(mean(abs.(Csmall_symm_cur  - Csmall_symm[i] )), 1e-6*χsmall^1.2, "symm")
-    @test zrtest(mean(abs.(Csmall_her2k_cur - Csmall_her2k[i])), 1e-6*χsmall^1.2, "her2k")
-    @test zrtest(mean(abs.(Csmall_syr2k_cur - Csmall_syr2k[i])), 1e-6*χsmall^1.2, "syr2k")
-    @test zrtest(mean(abs.(Csmall_herk_cur  - Csmall_herk[i] )), 1e-6*χsmall^1.2, "herk")
-    @test zrtest(mean(abs.(Csmall_syrk_cur  - Csmall_syrk[i] )), 1e-6*χsmall^1.2, "syrk")
+    @test zrtest(mean(abs.(Clarge_gemm_cur  - Clarge_gemm[i] )), 1e-6*χlarge^1.2, "500_gemm_$T")
+    @test zrtest(mean(abs.(Clarge_hemm_cur  - Clarge_hemm[i] )), 1e-6*χlarge^1.2, "500_hemm_$T")
+    @test zrtest(mean(abs.(Clarge_symm_cur  - Clarge_symm[i] )), 1e-6*χlarge^1.2, "500_symm_$T")
+    @test zrtest(mean(abs.(Clarge_her2k_cur - Clarge_her2k[i])), 1e-6*χlarge^1.2, "500_her2k_$T")
+    @test zrtest(mean(abs.(Clarge_syr2k_cur - Clarge_syr2k[i])), 1e-6*χlarge^1.2, "500_syr2k_$T")
+    @test zrtest(mean(abs.(Clarge_herk_cur  - Clarge_herk[i] )), 1e-6*χlarge^1.2, "500_herk_$T")
+    @test zrtest(mean(abs.(Clarge_syrk_cur  - Clarge_syrk[i] )), 1e-6*χlarge^1.2, "500_syrk_$T")
+    @test zrtest(mean(abs.(Clarge_trmm_cur  - Clarge_trmm[i] )), 1e-6*χlarge^1.2, "500_trmm_$T")
+    @test zrtest(mean(abs.(Csmall_gemm_cur  - Csmall_gemm[i] )), 1e-6*χsmall^1.2, "20_gemm_$T")
+    @test zrtest(mean(abs.(Csmall_hemm_cur  - Csmall_hemm[i] )), 1e-6*χsmall^1.2, "20_hemm_$T")
+    @test zrtest(mean(abs.(Csmall_symm_cur  - Csmall_symm[i] )), 1e-6*χsmall^1.2, "20_symm_$T")
+    @test zrtest(mean(abs.(Csmall_her2k_cur - Csmall_her2k[i])), 1e-6*χsmall^1.2, "20_her2k_$T")
+    @test zrtest(mean(abs.(Csmall_syr2k_cur - Csmall_syr2k[i])), 1e-6*χsmall^1.2, "20_syr2k_$T")
+    @test zrtest(mean(abs.(Csmall_herk_cur  - Csmall_herk[i] )), 1e-6*χsmall^1.2, "20_herk_$T")
+    @test zrtest(mean(abs.(Csmall_syrk_cur  - Csmall_syrk[i] )), 1e-6*χsmall^1.2, "20_syrk_$T")
+    @test zrtest(mean(abs.(Csmall_trmm_cur  - Csmall_trmm[i] )), 1e-6*χsmall^1.2, "20_trmm_$T")
+    @test zrtest(mean(abs.(Csmall_trsm_cur  - Csmall_trsm[i] )), 1e-2*χsmall^1.2, "20_trsm_$T") # Large TRSM err on random A.
 
     # Check - strided.
-    @test zrtest(mean(abs.(Cst_lg_gemm_cur - Cst_lg_gemm[i])), 1e-6*χlarge^1.2, "gemm")
-    @test zrtest(mean(abs.(Cst_sm_gemm_cur - Cst_sm_gemm[i])), 1e-6*χsmall^1.2, "gemm")
-    @test zrtest(mean(abs.(Cst_lg_hemm_cur - Cst_lg_hemm[i])), 1e-6*χlarge^1.2, "hemm")
-    @test zrtest(mean(abs.(Cst_sm_hemm_cur - Cst_sm_hemm[i])), 1e-6*χsmall^1.2, "hemm")
-    @test zrtest(mean(abs.(Cst_lg_symm_cur - Cst_lg_symm[i])), 1e-6*χlarge^1.2, "symm")
-    @test zrtest(mean(abs.(Cst_sm_symm_cur - Cst_sm_symm[i])), 1e-6*χsmall^1.2, "symm")
+    @test zrtest(mean(abs.(Cst_lg_gemm_cur - Cst_lg_gemm[i])), 1e-6*χlarge^1.2, "250_rs2_gemm_$T")
+    @test zrtest(mean(abs.(Cst_sm_gemm_cur - Cst_sm_gemm[i])), 1e-6*χsmall^1.2, "250_rs2_gemm_$T")
+    @test zrtest(mean(abs.(Cst_lg_hemm_cur - Cst_lg_hemm[i])), 1e-6*χlarge^1.2, "250_rs2_hemm_$T")
+    @test zrtest(mean(abs.(Cst_sm_hemm_cur - Cst_sm_hemm[i])), 1e-6*χsmall^1.2, "250_rs2_hemm_$T")
+    @test zrtest(mean(abs.(Cst_lg_symm_cur - Cst_lg_symm[i])), 1e-6*χlarge^1.2, "250_rs2_symm_$T")
+    @test zrtest(mean(abs.(Cst_sm_symm_cur - Cst_sm_symm[i])), 1e-6*χsmall^1.2, "250_rs2_symm_$T")
 end
 end
 
