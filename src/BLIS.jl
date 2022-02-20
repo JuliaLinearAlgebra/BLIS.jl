@@ -5,6 +5,7 @@ using Libdl
 using blis_jll
 using LinearAlgebra
 
+global blis_path = ""
 global libblis = C_NULL
 
 __init__() = begin
@@ -13,11 +14,19 @@ __init__() = begin
         @info "Using custom defined BLIS installation instead of blis_jll."
         global libblis = dlopen(string(get(ENV, "BLISDIR", ""), "/lib/libblis"))
     else
-        blis_path = blis_jll.blis_path
+        global blis_path = blis_jll.blis_path
         # Use BinaryBuilder provided BLIS library.
         @info "blis_jll yields BLIS installation: $blis_path."
         global libblis = dlopen(blis_path)
     end
+end
+
+export switch_blas
+switch_blas(; clear=false, verbose=false) = begin
+    if libblis == C_NULL
+        throw(ErrorException("BLIS library not found under $blis_path."))
+    end
+    BLAS.lbt_forward(blis_path, clear=clear, verbose=verbose)
 end
 
 # Data types.
