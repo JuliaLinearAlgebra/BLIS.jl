@@ -12,8 +12,7 @@ jobs:
         arch:
           - x64
         version:
-          - '1.4'
-          - '1.5'
+          - '1.7'
           - 'nightly'
         os:
           - macOS-latest

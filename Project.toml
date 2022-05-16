@@ -13,5 +13,5 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 blis_jll = "6136c539-28a5-5bf0-87cc-b183200dce32"
 
 [compat]
-julia = "1.4"
-blis_jll = "0.7.0 - 0.8.1"
+julia = "1.7"
+blis_jll = "0.9.0"
