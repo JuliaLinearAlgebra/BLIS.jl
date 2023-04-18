@@ -8,15 +8,18 @@ using LinearAlgebra
 global libblis = C_NULL
 
 __init__() = begin
-    if length(get(ENV, "BLISDIR", "")) > 0
+    if haskey(ENV, "BLISDIR")
+        blis_path = joinpath(ENV["BLISDIR"], "lib", "libblis.$dlext")
         # BLIS installation overriden by environmental variables.
         @info "Using custom defined BLIS installation instead of blis_jll."
-        global libblis = dlopen(string(get(ENV, "BLISDIR", ""), "/lib/libblis"))
+        global libblis = dlopen(blis_path)
+        BLAS.lbt_forward(blis_path)
     else
         blis_path = blis_jll.blis_path
         # Use BinaryBuilder provided BLIS library.
         @info "blis_jll yields BLIS installation: $blis_path."
         global libblis = dlopen(blis_path)
+        BLAS.lbt_forward(blis_path)
     end
 end
 
