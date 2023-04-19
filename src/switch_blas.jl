@@ -11,7 +11,7 @@ lbt_enable_blis(; clear=false) = begin
             fallback_lib = [fallback_lib..., ]
         end
 
-        LinearAlgebra.BLAS.lbt_forward(blis_jll.blis_path; clear=clear)
+        LinearAlgebra.BLAS.lbt_forward(libblis_path; clear=clear)
     else
         @warn "BLIS.lbt_enable_blis: BLIS already loaded. Not doing anything."
     end
