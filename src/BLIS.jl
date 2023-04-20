@@ -11,7 +11,7 @@ __init__() = begin
     if length(get(ENV, "BLISDIR", "")) > 0
         # BLIS installation overriden by environmental variables.
         @info "Using custom defined BLIS installation instead of blis_jll."
-        global libblis = dlopen(string(get(ENV, "BLISDIR", ""), "/lib/libblis"))
+        global libblis = dlopen(joinpath(get(ENV, "BLISDIR", ""), "lib/libblis"))
     else
         blis_path = blis_jll.blis_path
         # Use BinaryBuilder provided BLIS library.
@@ -91,8 +91,8 @@ using ..Types: BLIS_TRANS_BIT
 using DelimitedFiles
 # Load blacklist.
 blacklist = []
-if isfile(string(ENV["HOME"], "/.blis_jlbla_blacklist"))
-    blacklist = readdlm(string(ENV["HOME"], "/.blis_jlbla_blacklist"))
+if isfile(joinpath(homedir(), ".blis_jlbla_blacklist"))
+    blacklist = readdlm(joinpath(homedir(), ".blis_jlbla_blacklist"))
 end
 include("interface_linalg/level3.jl")
 include("interface_linalg/level2.jl")
