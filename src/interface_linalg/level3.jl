@@ -165,16 +165,9 @@ end
 if "hemm" ∉ blacklist
 @doc """
         hemm!(side, uplo, α, A, B, β, C)
-    BLIS-based HEMM with generic strides & mixed precision directly supported.
+    BLIS-based HEMM with generic strides directly supported.
     `A` expresses a `Hermitian` matrix with its `uplo` triangle.
     """ hemm!
-@blis_interface_linalg_lv3_hemm(BliCompatibleType,
-                                BliCompatibleType,
-                                BliCompatibleType,
-                                BliCompatibleType,
-                                BliCompatibleType,
-                                hemm!, hemm!,
-                                BLIS_HERMITIAN)
 @blis_interface_linalg_lv3_hemm Float32    Float32    Float32    Float32    Float32    hemm! hemm! BLIS_HERMITIAN
 @blis_interface_linalg_lv3_hemm Float64    Float64    Float64    Float64    Float64    hemm! hemm! BLIS_HERMITIAN
 @blis_interface_linalg_lv3_hemm ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 hemm! hemm! BLIS_HERMITIAN
@@ -184,16 +177,9 @@ end
 if "symm" ∉ blacklist
 @doc """
         symm!(side, uplo, α, A, B, β, C)
-    BLIS-based SYMM with generic strides & mixed precision directly supported.
+    BLIS-based SYMM with generic strides directly supported.
     `A` expresses a `Symmetric` matrix with its `uplo` triangle.
     """ symm!
-@blis_interface_linalg_lv3_hemm(BliCompatibleType,
-                                BliCompatibleType,
-                                BliCompatibleType,
-                                BliCompatibleType,
-                                BliCompatibleType,
-                                symm!, symm!,
-                                BLIS_SYMMETRIC)
 @blis_interface_linalg_lv3_hemm Float32    Float32    Float32    Float32    Float32    symm! symm! BLIS_SYMMETRIC
 @blis_interface_linalg_lv3_hemm Float64    Float64    Float64    Float64    Float64    symm! symm! BLIS_SYMMETRIC
 @blis_interface_linalg_lv3_hemm ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 symm! symm! BLIS_SYMMETRIC
@@ -244,19 +230,12 @@ end
 if "her2k" ∉ blacklist
 @doc """
         her2k!(uplo, tAB, α, A, B, β, C)
-    BLIS-based HER2K with generic strides & mixed precision directly supported.
+    BLIS-based HER2K with generic strides directly supported.
     Performs rank-2k update on `Hermitian` matrix `C` (expressed by `uplo`-triangle):
     ```math
     C = β C + (α A B^† + \\bar α B A^†)^{tAB}
     ```
     """ her2k!
-@blis_interface_linalg_lv3_her2k(BliCompatibleType,
-                                 BliCompatibleType,
-                                 BliCompatibleType,
-                                 BliCompatibleType,
-                                 BliCompatibleType,
-                                 her2k!, her2k!,
-                                 BLIS_HERMITIAN)
 @blis_interface_linalg_lv3_her2k Float32    Float32    Float32    Float32 Float32    her2k! her2k! BLIS_HERMITIAN
 @blis_interface_linalg_lv3_her2k Float64    Float64    Float64    Float64 Float64    her2k! her2k! BLIS_HERMITIAN
 @blis_interface_linalg_lv3_her2k ComplexF32 ComplexF32 ComplexF32 Float32 ComplexF32 her2k! her2k! BLIS_HERMITIAN
@@ -266,19 +245,12 @@ end
 if "syr2k" ∉ blacklist
 @doc """
         syr2k!(uplo, tAB, α, A, B, β, C)
-    BLIS-based SYR2K with generic strides & mixed precision directly supported.
+    BLIS-based SYR2K with generic strides directly supported.
     Performs rank-2k update on `Symmetric` matrix `C` (expressed by `uplo`-triangle):
     ```math
     C = β C + (α A B^T + \\bar α B A^T)^{tAB}
     ```
     """ syr2k!
-@blis_interface_linalg_lv3_her2k(BliCompatibleType,
-                                 BliCompatibleType,
-                                 BliCompatibleType,
-                                 BliCompatibleType,
-                                 BliCompatibleType,
-                                 syr2k!, syr2k!,
-                                 BLIS_SYMMETRIC)
 @blis_interface_linalg_lv3_her2k Float32    Float32    Float32    Float32    Float32    syr2k! syr2k! BLIS_SYMMETRIC
 @blis_interface_linalg_lv3_her2k Float64    Float64    Float64    Float64    Float64    syr2k! syr2k! BLIS_SYMMETRIC
 @blis_interface_linalg_lv3_her2k ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 syr2k! syr2k! BLIS_SYMMETRIC
@@ -326,15 +298,9 @@ end
 if "herk" ∉ blacklist
 @doc """
         herk!(uplo, tA, α, A, β, C)
-    BLIS-based HERK with generic strides & mixed precision directly supported.
+    BLIS-based HERK with generic strides directly supported.
     Performs rank-k update on `Hermitian` matrix `C` (expressed by `uplo`-triangle).
     """ herk!
-@blis_interface_linalg_lv3_herk(BliCompatibleType,
-                                BliCompatibleType,
-                                BliCompatibleType,
-                                BliCompatibleType,
-                                herk!, herk!,
-                                BLIS_HERMITIAN)
 @blis_interface_linalg_lv3_herk Float32 Float32    Float32 Float32    herk! herk! BLIS_HERMITIAN
 @blis_interface_linalg_lv3_herk Float64 Float64    Float64 Float64    herk! herk! BLIS_HERMITIAN
 @blis_interface_linalg_lv3_herk Float32 ComplexF32 Float32 ComplexF32 herk! herk! BLIS_HERMITIAN
@@ -344,15 +310,9 @@ end
 if "syrk" ∉ blacklist
 @doc """
         syrk!(uplo, tA, α, A, β, C)
-    BLIS-based SYRK with generic strides & mixed precision directly supported.
+    BLIS-based SYRK with generic strides directly supported.
     Performs rank-k update on `Symmetric` matrix `C` (expressed by `uplo`-triangle).
     """ syrk!
-@blis_interface_linalg_lv3_herk(BliCompatibleType,
-                                BliCompatibleType,
-                                BliCompatibleType,
-                                BliCompatibleType,
-                                syrk!, syrk!,
-                                BLIS_SYMMETRIC)
 @blis_interface_linalg_lv3_herk Float32    Float32    Float32    Float32    syrk! syrk! BLIS_SYMMETRIC
 @blis_interface_linalg_lv3_herk Float64    Float64    Float64    Float64    syrk! syrk! BLIS_SYMMETRIC
 @blis_interface_linalg_lv3_herk ComplexF32 ComplexF32 ComplexF32 ComplexF32 syrk! syrk! BLIS_SYMMETRIC
@@ -410,12 +370,8 @@ end
 if "trmm" ∉ blacklist
 @doc """
         trmm!(side, uplo, tA, dA, α, A, B)
-    BLIS-based TRMM with generic strides & mixed precision directly supported.
+    BLIS-based TRMM with generic strides directly supported.
     """ trmm!
-@blis_interface_linalg_lv3_trmm(BliCompatibleType,
-                                BliCompatibleType,
-                                BliCompatibleType,
-                                trmm!, trmm!)
 @blis_interface_linalg_lv3_trmm Float32    Float32    Float32    trmm! trmm!
 @blis_interface_linalg_lv3_trmm Float64    Float64    Float64    trmm! trmm!
 @blis_interface_linalg_lv3_trmm ComplexF32 ComplexF32 ComplexF32 trmm! trmm!
@@ -425,12 +381,8 @@ end
 if "trsm" ∉ blacklist
 @doc """
         trsm!(side, uplo, tA, dA, α, A, B)
-    BLIS-based TRSM with generic strides & mixed precision directly supported.
+    BLIS-based TRSM with generic strides directly supported.
     """ trsm!
-@blis_interface_linalg_lv3_trmm(BliCompatibleType,
-                                BliCompatibleType,
-                                BliCompatibleType,
-                                trsm!, trsm!)
 @blis_interface_linalg_lv3_trmm Float32    Float32    Float32    trsm! trsm!
 @blis_interface_linalg_lv3_trmm Float64    Float64    Float64    trsm! trsm!
 @blis_interface_linalg_lv3_trmm ComplexF32 ComplexF32 ComplexF32 trsm! trsm!

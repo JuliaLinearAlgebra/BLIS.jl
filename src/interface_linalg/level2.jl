@@ -53,14 +53,8 @@ end
 
 @doc """
         gemv!(tA, α, A, x, β, y)
-    BLIS-based GEMV with strides support & mixed-precision.
+    BLIS-based GEMV with strides support.
     """ gemv!
-@blis_interface_linalg_lv2_gemv(BliCompatibleType,
-                                BliCompatibleType,
-                                BliCompatibleType,
-                                BliCompatibleType,
-                                BliCompatibleType,
-                                gemv!, gemv!)
 @blis_interface_linalg_lv2_gemv Float32    Float32    Float32    Float32    Float32    gemv! gemv!
 @blis_interface_linalg_lv2_gemv Float64    Float64    Float64    Float64    Float64    gemv! gemv!
 @blis_interface_linalg_lv2_gemv ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 gemv! gemv!
@@ -94,7 +88,7 @@ macro blis_interface_linalg_lv2_hemv(Tc1, T1, T2, Tc2, T3, targetfunc, bliname, 
             oβ = BliObj(β)
             oy = BliObj(y)
 
-            ObjectBackend.bli_obj_set_uplo!(bli_ul, oA)
+            ObjectBackend.bli_obj_set_uplo!(bli_ul, oA.obj)
             ObjectBackend.bli_obj_set_struc!($bli_struc, oA.obj)
             $blifunc(oα, oA, ox, oβ, oy)
             y
@@ -105,15 +99,8 @@ end
 
 @doc """
         hemv!(ul, α, A, x, β, y)
-    BLIS-based HEMV with strides support & mixed-precision.
+    BLIS-based HEMV with strides support.
     """ hemv!
-@blis_interface_linalg_lv2_hemv(BliCompatibleType,
-                                BliCompatibleType,
-                                BliCompatibleType,
-                                BliCompatibleType,
-                                BliCompatibleType,
-                                hemv!, hemv!,
-                                BLIS_HERMITIAN)
 @blis_interface_linalg_lv2_hemv Float32    Float32    Float32    Float32    Float32    hemv! hemv! BLIS_HERMITIAN
 @blis_interface_linalg_lv2_hemv Float64    Float64    Float64    Float64    Float64    hemv! hemv! BLIS_HERMITIAN
 @blis_interface_linalg_lv2_hemv ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 hemv! hemv! BLIS_HERMITIAN
@@ -121,15 +108,8 @@ end
 
 @doc """
         symv!(ul, α, A, x, β, y)
-    BLIS-based SYMV with strides support & mixed-precision.
+    BLIS-based SYMV with strides support.
     """ symv!
-@blis_interface_linalg_lv2_hemv(BliCompatibleType,
-                                BliCompatibleType,
-                                BliCompatibleType,
-                                BliCompatibleType,
-                                BliCompatibleType,
-                                symv!, symv!,
-                                BLIS_SYMMETRIC)
 @blis_interface_linalg_lv2_hemv Float32    Float32    Float32    Float32    Float32    symv! symv! BLIS_SYMMETRIC
 @blis_interface_linalg_lv2_hemv Float64    Float64    Float64    Float64    Float64    symv! symv! BLIS_SYMMETRIC
 @blis_interface_linalg_lv2_hemv ComplexF32 ComplexF32 ComplexF32 ComplexF32 ComplexF32 symv! symv! BLIS_SYMMETRIC
@@ -162,9 +142,10 @@ macro blis_interface_linalg_lv2_trmv(T1, T2, targetfunc, bliname)
             oA = BliObj(A)
             ob = BliObj(b)
 
-            ObjectBackend.bli_obj_set_uplo!(bli_ul, oA)
-            ObjectBackend.bli_obj_set_diag!(bli_dA, oA)
-            ObjectBackend.bli_obj_set_onlytrans!(bli_tA, oA)
+            ObjectBackend.bli_obj_set_uplo!(bli_ul, oA.obj)
+            ObjectBackend.bli_obj_set_diag!(bli_dA, oA.obj)
+            ObjectBackend.bli_obj_set_onlytrans!(bli_tA, oA.obj)
+            ObjectBackend.bli_obj_set_struc!(BLIS_TRIANGULAR, oA.obj)
             $blifunc(oα, oA, ob)
             b
 
@@ -174,11 +155,8 @@ end
 
 @doc """
         trmv!(ul, tA, dA, A, b)
-    BLIS-based TRMV with strides support & mixed-precision.
+    BLIS-based TRMV with strides support.
     """
-@blis_interface_linalg_lv2_trmv(BliCompatibleType,
-                                BliCompatibleType,
-                                trmv!, trmv!)
 @blis_interface_linalg_lv2_trmv Float32    Float32    trmv! trmv!
 @blis_interface_linalg_lv2_trmv Float64    Float64    trmv! trmv!
 @blis_interface_linalg_lv2_trmv ComplexF32 ComplexF32 trmv! trmv!
@@ -186,11 +164,8 @@ end
 
 @doc """
         trsv!(ul, tA, dA, A, b)
-    BLIS-based TRSV with strides support & mixed-precision.
+    BLIS-based TRSV with strides support.
     """
-@blis_interface_linalg_lv2_trmv(BliCompatibleType,
-                                BliCompatibleType,
-                                trsv!, trsv!)
 @blis_interface_linalg_lv2_trmv Float32    Float32    trsv! trsv!
 @blis_interface_linalg_lv2_trmv Float64    Float64    trsv! trsv!
 @blis_interface_linalg_lv2_trmv ComplexF32 ComplexF32 trsv! trsv!
@@ -228,13 +203,8 @@ end
 
 @doc """
         ger!(α, x, y, A)
-    BLIS-based GER with strides support & mixed-precision.
+    BLIS-based GER with strides support.
     """ ger!
-@blis_interface_linalg_lv2_ger(BliCompatibleType,
-                               BliCompatibleType,
-                               BliCompatibleType,
-                               BliCompatibleType,
-                               ger!, ger!)
 @blis_interface_linalg_lv2_ger Float32    Float32    Float32    Float32    ger! ger!
 @blis_interface_linalg_lv2_ger Float64    Float64    Float64    Float64    ger! ger!
 @blis_interface_linalg_lv2_ger ComplexF32 ComplexF32 ComplexF32 ComplexF32 ger! ger!
@@ -264,7 +234,7 @@ macro blis_interface_linalg_lv2_her(Tc1, T1, T2, targetfunc, bliname, bli_struc)
             ox = BliObj(x)
             oA = BliObj(A)
 
-            ObjectBackend.bli_obj_set_uplo!(bli_ul, oA)
+            ObjectBackend.bli_obj_set_uplo!(bli_ul, oA.obj)
             ObjectBackend.bli_obj_set_struc!($bli_struc, oA.obj)
             $blifunc(oα, ox, oA)
             A
@@ -275,13 +245,8 @@ end
 
 @doc """
         her!(uplo, α, x, A)
-    BLIS-based HER with strides support & mixed-precision.
+    BLIS-based HER with strides support.
     """ her!
-@blis_interface_linalg_lv2_her(BliCompatibleType,
-                               BliCompatibleType,
-                               BliCompatibleType,
-                               her!, her!,
-                               BLIS_HERMITIAN)
 @blis_interface_linalg_lv2_her Float32    Float32    Float32    her! her! BLIS_HERMITIAN
 @blis_interface_linalg_lv2_her Float64    Float64    Float64    her! her! BLIS_HERMITIAN
 @blis_interface_linalg_lv2_her Float32    ComplexF32 ComplexF32 her! her! BLIS_HERMITIAN
@@ -289,13 +254,8 @@ end
 
 @doc """
         syr!(uplo, α, x, A)
-    BLIS-based SYR with strides support & mixed-precision.
+    BLIS-based SYR with strides support.
     """ syr!
-@blis_interface_linalg_lv2_her(BliCompatibleType,
-                               BliCompatibleType,
-                               BliCompatibleType,
-                               syr!, syr!,
-                               BLIS_SYMMETRIC)
 @blis_interface_linalg_lv2_her Float32    Float32    Float32    syr! syr! BLIS_SYMMETRIC
 @blis_interface_linalg_lv2_her Float64    Float64    Float64    syr! syr! BLIS_SYMMETRIC
 @blis_interface_linalg_lv2_her ComplexF32 ComplexF32 ComplexF32 syr! syr! BLIS_SYMMETRIC
