@@ -1,7 +1,7 @@
 name = "BLIS"
 uuid = "32f2db32-628a-4fc2-9392-deeafdcf461f"
 authors = ["RuQing Xu <r-xu@g.ecc.u-tokyo.ac.jp>"]
-version = "0.1.0"
+version = "0.2.1"
 
 [deps]
 DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
