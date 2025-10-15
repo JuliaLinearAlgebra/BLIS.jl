@@ -1,7 +1,7 @@
 NOTE
 ====
 
-This package is unmaintained. For a more up to date BLIS interface, please use [BLISBLAS.jl])(https://github.com/JuliaLinearAlgebra/BLISBLAS.jl).
+This package is unmaintained. For a more up to date BLIS interface, please use [BLISBLAS.jl](https://github.com/JuliaLinearAlgebra/BLISBLAS.jl).
 
 BLIS.jl
 =======
