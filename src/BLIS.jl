@@ -5,19 +5,21 @@ using Libdl
 using blis_jll
 using LinearAlgebra
 
+global libblis_path = ""
 global libblis = C_NULL
 
 __init__() = begin
     if length(get(ENV, "BLISDIR", "")) > 0
         # BLIS installation overriden by environmental variables.
         @info "Using custom defined BLIS installation instead of blis_jll."
+        global libblis_path = joinpath(get(ENV, "BLISDIR", ""), "lib/libblis")
         global libblis = dlopen(joinpath(get(ENV, "BLISDIR", ""), "lib/libblis"))
     else
-        blis_path = blis_jll.blis_path
+        global libblis_path = blis_jll.blis_path
         # Use BinaryBuilder provided BLIS library.
-        @info "blis_jll yields BLIS installation: $blis_path."
-        global libblis = dlopen(blis_path)
+        @info "blis_jll yields BLIS installation: $libblis_path."
     end
+    global libblis = dlopen(libblis_path)
 end
 
 # Data types.
