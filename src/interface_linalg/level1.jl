@@ -1,6 +1,7 @@
 # Level-1 LinearAlgebra.BLAS interface.
 #
 
+#=
 # NOTE: scal! and blascopy! have incx in its parmeter.
 #       No further StridedVector interface is provided.
 macro blis_interface_linalg_lv1_scal(T1, targetfunc, bliname)
@@ -63,6 +64,7 @@ end
 @blis_interface_linalg_lv1_copy Float64    blascopy! copyv!
 @blis_interface_linalg_lv1_copy ComplexF32 blascopy! copyv!
 @blis_interface_linalg_lv1_copy ComplexF64 blascopy! copyv!
+=#
 
 macro blis_interface_linalg_lv1_axpy(Tc1, T1, T2, targetfunc, bliname)
 
